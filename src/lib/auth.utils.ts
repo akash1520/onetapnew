@@ -1,4 +1,4 @@
-import { AuthError, Provider } from "@supabase/supabase-js";
+import { AuthApiError, AuthError, Provider } from "@supabase/supabase-js";
 import { supabase } from "app";
 import {
   DISPLAY_OVERWOLF_HOOKS_LOGS,
@@ -7,7 +7,7 @@ import {
 } from "app/shared/constants";
 import { Session } from "@supabase/supabase-js";
 import { useWindow } from "overwolf-hooks";
-import { ConsoleAuthError } from "./Errors.utils";
+import { ConsoleAuthError } from "../app/shared/Errors.utils";
 
 async function checkSupLogin() {
   await supabase.auth.onAuthStateChange((event, session) => {
@@ -131,9 +131,14 @@ const UseloginProvider = (provider: Provider) => {
   return retFunction;
 };
 
-async function forgotPassword(email:string):Promise<void> {
+async function forgotPassword(email:string):Promise<Error|undefined> {
     const { error} = await supabase.auth.resetPasswordForEmail(email) 
-    if(error) ConsoleAuthError(error);
+    console.info(`this is the ${error?.message}` );
+    
+    if(error) {
+      ConsoleAuthError(error);
+      return error;
+    }
 }
 
 export {

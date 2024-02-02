@@ -46,9 +46,10 @@ export const Header = ({WINDOW_NAME}:HeaderProps) => {
       onMouseMove={onMouseMove}
     >
       <SVGComponent />
-      <h1 className={"header__title"}>
-        OneTap
-      </h1>
+      <div className={"header__title"} >
+        <img alt="logo" width="20px" height="20px" src="/logo.png"/>
+        <p>ONETAP</p>
+      </div>
       <div className={"header__controls__group"}>
         <button
           className={classNames("header__icon header__control header__discord")}

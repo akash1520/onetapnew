@@ -6,8 +6,8 @@ import {
   loginEP,
   UseloginProvider,
   signUp,
-  forgotPassword,
-} from "app/shared/auth.utils";
+  forgotPassword
+} from "lib/auth.utils";
 import { useWindow } from "overwolf-hooks";
 import {
   DISPLAY_OVERWOLF_HOOKS_LOGS,
@@ -65,6 +65,8 @@ const handleSubmit = async (
   }
 };
 
+
+
 const AuthForm = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [desktop] = useWindow(
@@ -74,7 +76,6 @@ const AuthForm = () => {
   const [login] = useWindow(WINDOW_NAMES.LOGIN, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const discordLogin = UseloginProvider("discord");
   const googleLogin = UseloginProvider("google");
-
   const switchMode = () => {
     setIsSignup(!isSignup);
   };

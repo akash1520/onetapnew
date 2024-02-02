@@ -9,6 +9,9 @@ module.exports = {
     "./components/**/*.{html,js,ts,tsx}",
   ],
   theme: {
+    fontFamily:{
+      'display': ['Fira Sans', 'sans-serif'],
+    },
     extend: {},
   },
   plugins: [],

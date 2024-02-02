@@ -15,7 +15,7 @@ export default function Screen() {
           />
         </section>
         <section style={{ flexBasis: "40%" }} className="flex flex-col justify-center items-center bg-[#000517] text-white">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-10">Sign in to OneTap</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-10">Sign in into OneTap</h2>
           <AuthForm />
         </section>
       </section>

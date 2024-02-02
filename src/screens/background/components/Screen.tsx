@@ -10,7 +10,7 @@ import { HEARTHSTONE_CLASS_ID, getHearthstoneGame } from "lib/games";
 import { setInfo, setEvent } from "../stores/background";
 import store from "app/shared/store";
 import { log } from "lib/log";
-import { checkSession, parseToken } from "app/shared/auth.utils";
+import { checkSession, parseToken } from "lib/auth.utils";
 
 const { DESKTOP, INGAME, LOGIN } = WINDOW_NAMES;
 
@@ -52,7 +52,6 @@ const BackgroundWindow = () => {
           await Promise.all([stop(), desktop?.restore()]);
         }
       } else {
-        desktop.close();
         login.restore()
       }
     },

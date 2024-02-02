@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500&family=Fira+Sans&display=swap');
 
 :root {
   --neutral-1: #262626;
@@ -19,7 +20,7 @@
   --disabled-color: #666666;
   --error-color: #b00020;
   --background-color: #171717;
-  --font-family: "Roboto", sans-serif;
+  --font-family: "Fira Sans", "Roboto", sans-serif;
   --font-size: 16px;
   --font-weight: 400;
   --font-size-small: 14px;

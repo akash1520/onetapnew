@@ -41,6 +41,9 @@
 }
 
 .header__title {
+  display: flex;
+  align-items: center;
+  align-content: space-between;
   color: var(--primary-color-text);
   margin-left: 5px;
   margin-top: 3px;
