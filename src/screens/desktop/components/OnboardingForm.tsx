@@ -63,7 +63,7 @@ const OnBoardingForm = () => {
       {({ values }) => (
         <Form className="flex flex-col gap-1 overflow-y-auto">
         <div className="mb-2">
-            <img className="rounded-full h-max-[100px] w-max-[100px]" onClick={() => document.getElementById("profileImg")?.click()} src={`${profileImgUrl?profileImgUrl:"/profile.png"}`} alt="profile" />
+            <img style={{height:"200px",width:"200px",borderRadius:"50%", objectFit:"cover"}} onClick={() => document.getElementById("profileImg")?.click()} src={`${profileImgUrl?profileImgUrl:"/profile.png"}`} alt="profile" />
             <input hidden type="file" accept="image/jpg" id="profileImg" onChange={(e) =>
               setSelectedImage(e.target.files ? e.target.files[0] : null)
             } name="profileImg"/>
