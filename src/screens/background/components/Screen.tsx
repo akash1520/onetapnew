@@ -53,6 +53,7 @@ const BackgroundWindow = () => {
         }
       } else {
         login.restore()
+        desktop.close()
       }
     },
     [desktop, login, ingame, start, stop]

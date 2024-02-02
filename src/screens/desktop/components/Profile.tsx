@@ -6,10 +6,9 @@ type ProfileProps = {
   userName?: string;
 };
 
-export default function Profile({ className, profileImgUrl, userName }: ProfileProps) {
+export default function Profile({ profileImgUrl }: ProfileProps) {
   return (
       <div>
-        <h1 className="font-display text-center text-3xl">{userName?userName:"Your UserName"}</h1>
         <img
           className="w-[267.21px] h-[461px]"
           src={profileImgUrl?profileImgUrl:"/profile.png"}

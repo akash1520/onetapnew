@@ -1,8 +1,10 @@
 import { Header } from "components/Header/Header";
 import AuthForm from "./AuthForm";
 import { WINDOW_NAMES } from "app/shared/constants";
+import { useLoginHooks } from "./login.hooks";
 
 export default function Screen() {
+  useLoginHooks(WINDOW_NAMES.LOGIN, WINDOW_NAMES.DESKTOP)
   return (
     <>
       <Header WINDOW_NAME={WINDOW_NAMES.LOGIN}/>

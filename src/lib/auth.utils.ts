@@ -1,4 +1,4 @@
-import { AuthApiError, AuthError, Provider } from "@supabase/supabase-js";
+import {  AuthError, Provider } from "@supabase/supabase-js";
 import { supabase } from "app";
 import {
   DISPLAY_OVERWOLF_HOOKS_LOGS,
@@ -16,7 +16,7 @@ async function checkSupLogin() {
   });
 }
 
-async function checkSession(): Promise<Session | null> {
+async function checkSession() {
   const { data, error } = await supabase.auth.getSession();
   if (error) {
     ConsoleAuthError(error);
