@@ -41,15 +41,10 @@
 }
 
 .header__title {
-  display: flex;
-  align-items: center;
-  align-content: space-between;
   color: var(--primary-color-text);
   margin-left: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
   margin-top: 3px;
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-medium);
 }
 
 .header__controls__group {

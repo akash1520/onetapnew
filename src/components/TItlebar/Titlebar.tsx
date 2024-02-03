@@ -19,7 +19,7 @@ const handleDiscordClick = () => {
 
 export const Titlebar = ({WINDOW_NAME}:HeaderProps) => {
   const [maximized, setMaximize] = useState(false);
-  const [desktopWindow] = useWindow(WINDOW_NAME, DISPLAY_OVERWOLF_HOOKS_LOGS);
+  const [currentWindow] = useWindow(WINDOW_NAME, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const [backgroundWindow] = useWindow(BACKGROUND, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const { onDragStart, onMouseMove, setCurrentWindowID } = useDrag(
     null,
@@ -27,15 +27,15 @@ export const Titlebar = ({WINDOW_NAME}:HeaderProps) => {
   );
 
   const toggleIcon = useCallback(() => {
-    if (!desktopWindow) return;
-    if (!maximized) desktopWindow.maximize();
-    else desktopWindow.restore();
+    if (!currentWindow) return;
+    if (!maximized) currentWindow.maximize();
+    else currentWindow.restore();
     setMaximize(!maximized);
-  }, [desktopWindow, maximized]);
+  }, [currentWindow, maximized]);
 
   const updateDragWindow = useCallback(() => {
-    if (desktopWindow?.id) setCurrentWindowID(desktopWindow.id);
-  }, [desktopWindow, setCurrentWindowID]);
+    if (currentWindow?.id) setCurrentWindowID(currentWindow.id);
+  }, [currentWindow, setCurrentWindowID]);
 
   useEffect(updateDragWindow, [updateDragWindow]);
 
@@ -72,7 +72,7 @@ export const Titlebar = ({WINDOW_NAME}:HeaderProps) => {
         </button>
         <button
           className="header__icon header__control"
-          onClick={desktopWindow?.minimize}
+          onClick={currentWindow?.minimize}
         >
           <svg>
             <use xlinkHref="#window-control_minimize" />
@@ -94,7 +94,10 @@ export const Titlebar = ({WINDOW_NAME}:HeaderProps) => {
         </button>
         <button
           className="header__icon header__control header__control__close"
-          onClick={backgroundWindow?.close}
+          onClick={()=>{
+            backgroundWindow?.close()
+            currentWindow.close()
+          }}
         >
           <svg>
             <use xlinkHref="#window-control_close" />

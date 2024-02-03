@@ -17,7 +17,7 @@ const DesktopScreen = ({className}:{className:string}) => {
   useDesktopHooks()
 
   return (
-    <div className={`desktop h-max-[95vh] ${className}`}>
+    <div className={`desktop ${className}`}>
       <div style={{display:"flex", gap:"3rem", flexDirection:"column"}}>
       </div>
       <div className={"desktop__container"}>

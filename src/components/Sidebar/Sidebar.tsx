@@ -1,14 +1,13 @@
-import { logOut } from "lib/auth.utils";
 import ListCompoenent from "./ListCompoenent";
 
-export default function Sidebar() {
+export default function Sidebar({className}:{className:string}) {
   return (
-    <div className="w-52 h-[95vh]">
+    <div className={`${className} w-52`}>
       <div className="flex py-0 mt-5">
         <span className="font-Ranchers mx-4 text-4xl">ONE TAP</span>
         <img src="/logo.png" className="w-10 h-10" alt="logo" />
       </div>
-      <div className="flex py-0 mt-16 font-Impact h-96 flex-col justify-between mx-6">
+      <div className="flex py-0 mt-16 font-Impact flex-col justify-between mx-6">
         <ul className="flex my-0 py-0 flex-col">
           <ListCompoenent iconSrc="vector" to="/" color="#9B6CFF">Home</ListCompoenent>
           <ListCompoenent iconSrc="vector-1" to="challenges">Challenges</ListCompoenent>
