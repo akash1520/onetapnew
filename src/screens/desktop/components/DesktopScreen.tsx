@@ -1,28 +1,23 @@
 import { Title } from "components/Title/Title";
 import { useTranslation } from "react-i18next";
-import { Header } from "../../../components/Header/Header";
 import { Overview } from "features/overview";
 import { useAdRemoval } from "features/monetization";
 import "./styles/Screen.css";
 import { PremiumContent } from "./PremiumContent";
 import { FreeContent } from "./FreeContent";
-import { WINDOW_NAMES } from "app/shared/constants";
-import { logOut } from "lib/auth.utils";
 import { useDesktopHooks } from "./Desktop.hooks";
 
 //avoid the use of static text, use i18n instead, each language has its own text, and the text is stored in the
 //locales folder in the project root
 
-const DesktopScreen = () => {
+const DesktopScreen = ({className}:{className:string}) => {
   const { t } = useTranslation();
   const { isLoading, isSubscribed } = useAdRemoval();
   
   useDesktopHooks()
 
   return (
-    <div className="desktop">
-      <Header WINDOW_NAME={WINDOW_NAMES.DESKTOP}/>
-      <button type="button" onClick={logOut}>Log Out</button>
+    <div className={`desktop h-max-[95vh] ${className}`}>
       <div style={{display:"flex", gap:"3rem", flexDirection:"column"}}>
       </div>
       <div className={"desktop__container"}>

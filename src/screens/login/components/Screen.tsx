@@ -1,4 +1,4 @@
-import { Header } from "components/Header/Header";
+import { Titlebar } from "components/TItlebar/Titlebar";
 import AuthForm from "./AuthForm";
 import { WINDOW_NAMES } from "app/shared/constants";
 import { useLoginHooks } from "./login.hooks";
@@ -7,7 +7,7 @@ export default function Screen() {
   useLoginHooks(WINDOW_NAMES.LOGIN, WINDOW_NAMES.DESKTOP)
   return (
     <>
-      <Header WINDOW_NAME={WINDOW_NAMES.LOGIN}/>
+      <Titlebar WINDOW_NAME={WINDOW_NAMES.LOGIN}/>
       <section className="flex h-[95vh]">
         <section style={{ flexBasis: "60%" }}>
           <img

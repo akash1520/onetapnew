@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500&family=Fira+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ranchers&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+body{
+  height: 100%;
+  width: 100%;
+}
 
 :root {
   --neutral-1: #262626;

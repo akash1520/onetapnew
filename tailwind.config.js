@@ -12,6 +12,8 @@ module.exports = {
   theme: {
     fontFamily:{
       'display': ['Fira Sans', 'sans-serif'],
+      'Ranchers':['Ranchers', 'sans-serif'],
+      'Impact':['Anton', 'sans-serif'],
     },
     extend: {},
   },

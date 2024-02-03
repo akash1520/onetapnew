@@ -6,7 +6,7 @@ const checkUserNameAvailability = ()=>{
   return (Math.floor(Math.random()*1000)%2)
 }
 
-export default function UserForm() {
+export default function UserForm({className}:{className:string}) {
   const [username, setUsername] = useState("Your Username")
 
   const handleChange = (usernameRef: MutableRefObject<HTMLInputElement | null>)=>{
@@ -19,7 +19,7 @@ export default function UserForm() {
   }
 
   return (
-    <>
+    <section className={className}>
       <section className="flex h-[95vh]">
       <section className="w-2/5 flex flex-col justify-center items-center bg-[#131313]">
       <h1 className="font-display text-center text-3xl">{username}</h1>
@@ -32,6 +32,6 @@ export default function UserForm() {
           <OnboardingForm handleChangeFunc={handleChange}/>
         </section>
       </section>
-    </>
+    </section>
   );
 }

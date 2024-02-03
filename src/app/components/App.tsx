@@ -7,6 +7,7 @@ import "../shared/root.css";
 import { log } from "lib/log";
 
 
+
 const supabase_url = process.env.REACT_APP_SUPABASE_URL as string;
 const supabase_key = process.env.REACT_APP_SUPABASE_KEY as string;
 export const supabase = createClient(supabase_url,supabase_key);

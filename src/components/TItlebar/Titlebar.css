@@ -46,8 +46,10 @@
   align-content: space-between;
   color: var(--primary-color-text);
   margin-left: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
   margin-top: 3px;
-  font-size: var(--font-size-medium);
+  font-size: var(--font-size-large);
 }
 
 .header__controls__group {
