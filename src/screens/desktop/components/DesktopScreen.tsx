@@ -5,7 +5,6 @@ import { useAdRemoval } from "features/monetization";
 import "./styles/Screen.css";
 import { PremiumContent } from "./PremiumContent";
 import { FreeContent } from "./FreeContent";
-import { useDesktopHooks } from "./Desktop.hooks";
 
 //avoid the use of static text, use i18n instead, each language has its own text, and the text is stored in the
 //locales folder in the project root
@@ -14,8 +13,6 @@ const DesktopScreen = ({className}:{className:string}) => {
   const { t } = useTranslation();
   const { isLoading, isSubscribed } = useAdRemoval();
   
-  useDesktopHooks()
-
   return (
     <div className={`desktop ${className}`}>
       <div style={{display:"flex", gap:"3rem", flexDirection:"column"}}>

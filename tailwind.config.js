@@ -14,8 +14,16 @@ module.exports = {
       'display': ['Fira Sans', 'sans-serif'],
       'Ranchers':['Ranchers', 'sans-serif'],
       'Impact':['Anton', 'sans-serif'],
+      'Poppins':['Poppins', 'sans-serif'],
     },
-    extend: {},
+    extend: {
+      "backgroundImage":{
+        "games_banner":"url(/public/banners/games_banner.png)"
+      },
+      "gridTemplateRows":{
+        '9':'repeat(9,minmax(0,5vh))'
+      }
+    },
   },
   plugins: [],
 };

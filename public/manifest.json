@@ -39,7 +39,7 @@
     "game_events": [
       9898
     ],
-    "start_window": "desktop",
+    "start_window": "background",
     "windows": {
       "background": {
         "file": "Files/index.html",

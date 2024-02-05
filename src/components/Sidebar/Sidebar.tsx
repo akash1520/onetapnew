@@ -2,7 +2,7 @@ import ListCompoenent from "./ListCompoenent";
 
 export default function Sidebar({className}:{className:string}) {
   return (
-    <div className={`${className} w-52`}>
+    <div className={`${className} border-[#9D9D9D] h-[100dvh] border-r-[1px] w-52`}>
       <div className="flex py-0 mt-5">
         <span className="font-Ranchers mx-4 text-4xl">ONE TAP</span>
         <img src="/logo.png" className="w-10 h-10" alt="logo" />

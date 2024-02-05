@@ -4,11 +4,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500&family=Fira+Sans&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ranchers&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins=swap');
 
 html, body{
   height: 100%;
   width: 100%;
-  scrollbar-width: none;
+}
+
+::-webkit-scrollbar{
+  width: 0px; 
+  height: 0px;
 }
 
 :root {

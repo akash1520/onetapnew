@@ -42,8 +42,8 @@
 
 .header__title {
   color: var(--primary-color-text);
-  margin-left: 5px;
-  margin-top: 3px;
+  width:100dvw;
+  height: 5dvh;
   font-size: var(--font-size-medium);
 }
 

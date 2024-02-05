@@ -8,7 +8,10 @@ import { classNames, isDev } from "lib/utils";
 import { SVGComponent } from "../../screens/desktop/components/DesktopHeaderSVG";
 import "./Titlebar.css";
 
-type HeaderProps = {WINDOW_NAME:string}
+type HeaderProps = {
+  WINDOW_NAME:string
+  className?:string
+}
 
 const { BACKGROUND } = WINDOW_NAMES;
 
@@ -17,7 +20,7 @@ const handleDiscordClick = () => {
   overwolf.utils.openUrlInDefaultBrowser("https://discord.com/channels/1150063823311618058/1196157523921731625");
 };
 
-export const Titlebar = ({WINDOW_NAME}:HeaderProps) => {
+export const Titlebar = ({WINDOW_NAME, className}:HeaderProps) => {
   const [maximized, setMaximize] = useState(false);
   const [currentWindow] = useWindow(WINDOW_NAME, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const [backgroundWindow] = useWindow(BACKGROUND, DISPLAY_OVERWOLF_HOOKS_LOGS);
@@ -41,7 +44,7 @@ export const Titlebar = ({WINDOW_NAME}:HeaderProps) => {
 
   return (
     <header
-      className={"header"}
+      className={`header ${className}`}
       onMouseDown={onDragStart}
       onMouseMove={onMouseMove}
     >
