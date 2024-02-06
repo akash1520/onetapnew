@@ -1,15 +1,13 @@
 import { t } from 'i18next';
-import Card from './Card';
+import { ReactNode } from 'react';
 
-export default function Carousel({className, title}:{className?:string, title:string}) {
+type CarouselProps={className?:string, title?:string, children?:ReactNode}
+
+export default function Carousel({className="", children, title="title"}:CarouselProps) {
   return (
     <div className={`${className}`}>
-        <h1>{t(title)}</h1>
-    <div className='flex overflow-x-scroll my-10 ml-2 mr-20 gap-4'>
-      {Array.from({ length: 10 }, (_, i) => (
-        <Card key={i} game_name="Pubg" discount={10} offers_count={10} />
-      ))}
-    </div>
+        <h1 className='ml-2 text-2xl font-Impact mt-12 mb-5'>{t(title)}</h1>
+        {children}
     </div>
   );
 }

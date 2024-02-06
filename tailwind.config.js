@@ -15,6 +15,7 @@ module.exports = {
       'Ranchers':['Ranchers', 'sans-serif'],
       'Impact':['Anton', 'sans-serif'],
       'Poppins':['Poppins', 'sans-serif'],
+      'Inter':['Inter', 'sans-serif'],
     },
     extend: {
       "backgroundImage":{

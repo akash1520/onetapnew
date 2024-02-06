@@ -7,7 +7,7 @@ export default function GamesBanner() {
           <h1 className="text-2xl row-start-3">
             Earn coins and shop your favourite gaming items on discounted price
           </h1>
-          <Button className="py-2 row-start-6 h-fit w-fit px-10">Explore Now</Button>
+          <Button className="py-3 row-start-6 h-fit w-fit font-Poppins font-bold px-10">Explore Now</Button>
         </div>
         <div className="bg-games_banner bg-opacity-80 bg-left">
             {/* <img src="/banners/games_banner.png" className="bg-cover" alt="games"/> */}
