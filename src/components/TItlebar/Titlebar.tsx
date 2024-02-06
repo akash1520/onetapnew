@@ -44,7 +44,7 @@ export const Titlebar = ({WINDOW_NAME, className}:HeaderProps) => {
 
   return (
     <header
-      className={`header ${className}`}
+      className={`header z-10 ${className}`}
       onMouseDown={onDragStart}
       onMouseMove={onMouseMove}
     >

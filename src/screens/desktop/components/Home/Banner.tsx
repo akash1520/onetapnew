@@ -8,7 +8,7 @@ export default function Banner() {
         <div className="col-span-1">
           <img className="w-full p-5" src="/banners/pubg.png" alt="" />
         </div>
-        <div className="my-10 mx-5">
+        <div className="my-10 relative mx-5">
           <div>
             <h1 className="text-[32px] font-Impact">COD Warzone 2000 Points</h1>
             <div className="flex gap-1">
@@ -33,14 +33,17 @@ export default function Banner() {
         <div className="absolute right-0">
           <img
             src="/icons/coin_point1.svg"
-            className="relative right-14 rotate-[25]"
+            className="relative -right-16 -top-1"
             alt=""
           />
           <img
-            src="/icons/coin_point1.svg"
-            className=" relative right-4 rotate-45 -top-28"
+            src="/icons/coin_point.svg"
+            className=" relative -right-[7.2rem] -top-32"
             alt=""
           />
+          <div className="relative w-[18rem] -top-[14rem] right-20">
+            <img className="rounded" src="/yellow_block.png" alt=""/>
+          </div>
         </div>
       </div>
     </>
