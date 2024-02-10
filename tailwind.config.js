@@ -23,6 +23,9 @@ module.exports = {
       },
       "gridTemplateRows":{
         '9':'repeat(9,minmax(0,5vh))'
+      },
+      "colors":{
+        "onetapViolet":"#9B6CFF"
       }
     },
   },

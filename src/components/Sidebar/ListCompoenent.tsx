@@ -1,11 +1,30 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { ReactNode, useContext } from "react";
+import { NavLink } from "react-router-dom";
+import { ActiveRouteContext } from "screens/desktop/components/Screen";
 
-export default function ListCompoenent({children, to, iconSrc, color}:{children:React.ReactNode,to:string,iconSrc:string, color?:string}) {
+export default function ListCompoenent({
+  children,
+  to,
+  iconSrc,
+}: {
+  children: ReactNode;
+  to: string;
+  iconSrc: string;
+}) {
+
+  const {handleRouteChange, activeRoute} = useContext(ActiveRouteContext)
+  const activeIconSrc = iconSrc+"Active"
+
   return (
-    <li className="flex my-5 py-0 items-center">
-    <img className={`color-[${color}] h-5 w-5`} src={`/icons/${iconSrc}.svg`} alt=""/>
-    <Link to={to} className={`text-xl px-2 text-[${color}]`}> {children}</Link>
+    <li onClick={()=>handleRouteChange(`${to}`)} className="flex my-5 py-0 items-center">
+      <img className={`h-5 w-5`} src={`/icons/${activeRoute===to?activeIconSrc:iconSrc}.svg`} alt="" />
+      <NavLink
+        to={to}
+        className={`text-xl px-2 ${activeRoute===to ? "bg-clip-text text-transparent bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]":""}`}
+      >
+        {" "}
+        {children}
+      </NavLink>
     </li>
-  )
+  );
 }
