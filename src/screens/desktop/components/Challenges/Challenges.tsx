@@ -1,4 +1,3 @@
-import LevelCard from "./components/ChallengeLeft/LevelCard";
 import Col1 from "./components/Col1";
 import GameCard from "./components/GameCard";
 
