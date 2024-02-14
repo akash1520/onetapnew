@@ -1,14 +1,11 @@
-import Button from "components/Button/Button";
-import CountDown from "./CountDown";
+import React from 'react'
+import CountDown from './CountDown'
+import Button from 'components/Button/Button'
 
-export default function Banner() {
+export default function CODBanner() {
   return (
     <>
-      <div className="bg-[#222222] ml-2 mr-20 my-10 rounded grid grid-cols-2">
-        <div className="col-span-1">
-          <img className="w-full p-5" src="/banners/pubg.png" alt="" />
-        </div>
-        <div className="my-10 relative mx-5">
+             <div className="my-10 relative mx-5">
           <div>
             <h1 className="text-[32px] font-Impact">COD Warzone 2000 Points</h1>
             <div className="flex gap-1">
@@ -45,7 +42,6 @@ export default function Banner() {
             <img className="rounded" src="/yellow_block.png" alt=""/>
           </div>
         </div>
-      </div>
-    </>
-  );
+          </>
+  )
 }

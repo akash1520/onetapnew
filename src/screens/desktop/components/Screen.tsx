@@ -48,7 +48,7 @@ export default function Screen() {
         <Routes>
           <Route path="/" element={<Home className="grow mt-10 col-start-2 col-span-4" />} />
           <Route path="/onboard" element={<UserForm className="grow col-start-2 col-span-4" />} />
-          <Route path="/challenges" element={<Challenges />} />
+          <Route path="/challenges" element={<Challenges className="grow col-start-2 col-span-4" />} />
         </Routes>
       </MemoryRouter>
     </div>

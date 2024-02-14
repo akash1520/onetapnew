@@ -25,7 +25,7 @@ module.exports = {
         '9':'repeat(9,minmax(0,5vh))'
       },
       "colors":{
-        "onetapViolet":"#9B6CFF"
+        "onetapViolet":"#9B6CFF",
       }
     },
   },
