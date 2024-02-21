@@ -17,10 +17,10 @@ export default function GameCard({ className }:{className: string}) {
                 />
 
                 {/* Custom Checkbox */}
-                <div className={`w-6 h-6 absolute border ${isChecked ? 'bg-[#363636] border-transparent' : 'bg-[#363636] border-gray-300'}`}>
+                <div className={`w-5 h-5 absolute border bg-[#363636] border-gray-300`}>
                     {/* Checkmark Icon */}
                     {isChecked && (
-                        <svg className="fill-current text-white h-5 w-5 pointer-events-none" viewBox="0 0 20 20">
+                        <svg className="fill-current absolute -top-[2px] text-white h-5 w-5 pointer-events-none" viewBox="0 0 20 20">
                             <path d="M7.629 14.571L3.357 10.3a1 1 0 00-1.414 1.414l4.95 4.95a1 1 0 001.414 0l8.607-8.607a1 1 0 10-1.414-1.414L7.629 14.571z" />
                         </svg>
                     )}

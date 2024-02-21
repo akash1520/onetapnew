@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function Progressbar(  {completed,
-    total, color, className}:{
+    total, color="#692CCD", className}:{
         completed: number;
   total: number;
   color?: string;
@@ -22,7 +22,7 @@ export default function Progressbar(  {completed,
         className={`flex items-center justify-start w-full rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 h-3`}
       >
         <div
-          className={`h-full rounded-full text-transparent ${color?`bg-[${color}]`:`bg-gradient-to-r from-[#692CCD] to-[#B87FF6]}`}`}
+          className={`h-full rounded-full text-transparent bg-[#692CCD]`}
           style={{ width: `${Math.min(Math.max(0, Math.floor((currentProgress / total) * 100)), 100) }%` }}
         />
       </div>

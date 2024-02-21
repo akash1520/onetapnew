@@ -1,5 +1,5 @@
 import { Titlebar } from "components/TItlebar/Titlebar";
-import UserForm from "./UserForm";
+import UserForm from "./UserOnboarding/UserForm";
 import Sidebar from "components/Sidebar/Sidebar";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import Header from "components/Header/Header";
@@ -8,6 +8,7 @@ import './styles/Screen.css';
 import Challenges from "./Challenges/Challenges";
 import { ReactNode, useState } from "react";
 import { createContext } from "react";
+import Leaderboard from "./Leaderboard/Leaderboard";
 
 // Define the type for the active route
 interface ActiveRouteContextValue {
@@ -49,6 +50,7 @@ export default function Screen() {
           <Route path="/" element={<Home className="grow mt-10 col-start-2 col-span-4" />} />
           <Route path="/onboard" element={<UserForm className="grow col-start-2 col-span-4" />} />
           <Route path="/challenges" element={<Challenges className="grow col-start-2 col-span-4" />} />
+          <Route path="/leaderboard" element={<Leaderboard className="grow col-start-2 col-span-4" />} />
         </Routes>
       </MemoryRouter>
     </div>

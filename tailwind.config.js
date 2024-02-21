@@ -16,16 +16,19 @@ module.exports = {
       'Impact':['Anton', 'sans-serif'],
       'Poppins':['Poppins', 'sans-serif'],
       'Inter':['Inter', 'sans-serif'],
+      'Sansita':['Sansita', 'sans-serif'],
     },
     extend: {
       "backgroundImage":{
-        "games_banner":"url(/public/banners/games_banner.png)"
+        "games_banner":"url(/public/banners/games_banner.png)",
+        "leaderboard_trophy":"url(/public/images/leaderboard_trophy.png)",
       },
       "gridTemplateRows":{
         '9':'repeat(9,minmax(0,5vh))'
       },
       "colors":{
         "onetapViolet":"#9B6CFF",
+        "onetapYellow":"#E5AC3C"
       }
     },
   },

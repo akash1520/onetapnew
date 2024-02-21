@@ -25,6 +25,7 @@ export default function Col1() {
           <div className="flex flex-col justify-center gap-1">
             <div className="flex items-center gap-1">
             <Progressbar
+            color="#692CCD"
               className="w-56"
               completed={10}
               total={50}

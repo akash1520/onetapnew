@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Overview } from "features/overview";
 import { useAdRemoval } from "features/monetization";
 import "./styles/Screen.css";
-import { PremiumContent } from "./PremiumContent";
-import { FreeContent } from "./FreeContent";
+import { PremiumContent } from "./owdefault/PremiumContent";
+import { FreeContent } from "./owdefault/FreeContent";
 
 //avoid the use of static text, use i18n instead, each language has its own text, and the text is stored in the
 //locales folder in the project root
