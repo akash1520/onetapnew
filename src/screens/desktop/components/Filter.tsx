@@ -10,6 +10,5 @@ export default function Filter({children, className}:{children:ReactNode, classN
             </div>
         </div>
       </div>
-
   )
 }

@@ -1,6 +1,6 @@
 import { ReactNode, useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { ActiveRouteContext } from "screens/desktop/components/Screen";
+import { ActiveRouteContext } from "screens/desktop/components/Contexts/ActiveRouteContext";
 
 export default function ListCompoenent({
   children,

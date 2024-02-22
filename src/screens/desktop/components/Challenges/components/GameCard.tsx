@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useFilterContext } from '../../Contexts/FilterContext';
 
-export default function GameCard({ className }:{className: string}) {
+export default function GameCard({ className, id }:{className: string, id?: string}) {
+    const {gameId, handleFilterChange} = useFilterContext()
     const [isChecked, setIsChecked] = useState(false);
+   
+  useEffect(()=>{
+    setIsChecked(gameId===id);
+  },[gameId,id])
+    
 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
+        id && handleFilterChange(id)
     };
 
     return (
@@ -13,7 +21,7 @@ export default function GameCard({ className }:{className: string}) {
                 <input 
                     type="checkbox" 
                     className="sr-only" // Hide checkbox visually but remain accessible
-                    checked={isChecked}
+                    checked={gameId===id}
                 />
 
                 {/* Custom Checkbox */}

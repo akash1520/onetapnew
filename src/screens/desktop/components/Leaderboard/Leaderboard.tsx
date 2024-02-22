@@ -1,7 +1,22 @@
+import { useEffect, useState } from "react";
 import Progressbar from "../Challenges/components/ChallengeLeft/Progressbar";
 import GameCard from "../Challenges/components/GameCard";
+import { useFilterContext } from "../Contexts/FilterContext";
 import Filter from "../Filter";
 import LeaderboardBanner from "./LeaderboardBanner";
+
+interface GameData {
+  rank: number;
+  id: number;
+  gameBalance: number;
+  gameLevel: number;
+  User: {
+    userName: string;
+  };
+  Game: {
+    gameName: string;
+  };
+}
 
 const ScoreBox = ({
   score,
@@ -53,7 +68,7 @@ const Record = ({
   level,
   isFirst,
   name,
-  coins
+  coins,
 }: {
   rank: number;
   level: number;
@@ -65,8 +80,12 @@ const Record = ({
     <div className="w-full p-4 bg-gradient-to-t from-[#7A43F0] to-[#C38CFF] flex items-center justify-between font-Impact">
       <h2>{rank}</h2>
       <div className="flex items-center">
-        <img className={`w-8 ${isFirst?"":"invisible"} h-8`} src="/images/leaderboard_trophy.png" alt=""/>
-      <h2>{name}</h2>
+        <img
+          className={`w-8 ${isFirst ? "" : "invisible"} h-8`}
+          src="/images/leaderboard_trophy.png"
+          alt=""
+        />
+        <h2>{name}</h2>
       </div>
       <div className="flex items-center gap-2">
         <img src="/icons/coin.svg" alt="" />
@@ -78,6 +97,30 @@ const Record = ({
 };
 
 export default function Leaderboard({ className }: { className: string }) {
+  const { gameId } = useFilterContext();
+  const [gameData, setGameData] = useState<GameData[]|null>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const gameData = await fetch(
+          `http://localhost:3002/leaderboard/game-specific/${gameId}`
+        );
+
+        if (!gameData.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const jsonData = await gameData.json();
+        setGameData(jsonData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [gameId]);
+
   return (
     <>
       <div className={`${className}`}>
@@ -90,30 +133,28 @@ export default function Leaderboard({ className }: { className: string }) {
             <h1 className="text-2xl font-Impact">Ranking</h1>
             <div className="flex mt-4 py-8 px-4 flex-col bg-gradient-to-t from-[#342249] via-[#331E4B]  to-[#683C98] gap-4  border-onetapViolet">
               <Record isFirst level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
-              <Record level={6} rank={1} name="akash" coins={40} />
+              {
+                gameData && gameData.map(
+                  (game:GameData) => (
+                    <Record
+                      key={game.id}
+                      level={game.gameLevel}
+                      rank={game.rank}
+                      name={game.User.userName}
+                      coins={game.gameBalance}
+                    />
+                  )
+                )
+              }
             </div>
           </div>
           <Filter className="w-[48dvw]">
-            <GameCard className="w-40"/>
-            <GameCard className="w-40"/>
-            <GameCard className="w-40"/>
-            <GameCard className="w-40"/>
-            <GameCard className="w-40"/>
-            <GameCard className="w-40"/>
-            <GameCard className="w-40"/>
-            <GameCard className="w-40"/>
-            <GameCard className="w-40"/>
+            <GameCard id="1" className="w-40" />
+            <GameCard id="2" className="w-40" />
+            <GameCard id="3" className="w-40" />
+            <GameCard id="4" className="w-40" />
+            <GameCard id="5" className="w-40" />
+            <GameCard id="6" className="w-40" />
           </Filter>
         </div>
       </div>

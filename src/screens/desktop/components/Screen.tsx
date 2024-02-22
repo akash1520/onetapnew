@@ -6,34 +6,9 @@ import Header from "components/Header/Header";
 import Home from "./Home/Home";
 import './styles/Screen.css';
 import Challenges from "./Challenges/Challenges";
-import { ReactNode, useState } from "react";
-import { createContext } from "react";
 import Leaderboard from "./Leaderboard/Leaderboard";
-
-// Define the type for the active route
-interface ActiveRouteContextValue {
-  activeRoute: string;
-  handleRouteChange: (newRoute: string) => void;
-}
-
-// Create the typed context with the defined interface
-export const ActiveRouteContext = createContext<ActiveRouteContextValue>(undefined as unknown as ActiveRouteContextValue);
-
-
-export const ActiveRouteProvider = ({children}:{children:ReactNode})=>{
-  const [activeRoute, setActiveRoute] = useState("/")
-
-  const handleRouteChange = (newRoute:string)=>{
-    setActiveRoute(newRoute)
-  }
-
-  return (
-    <ActiveRouteContext.Provider value={{ activeRoute, handleRouteChange }}>
-      {children}
-    </ActiveRouteContext.Provider>
-  );
-}
-
+import { ActiveRouteProvider } from "./Contexts/ActiveRouteContext";
+import { FilterProvider } from "./Contexts/FilterContext";
 
 
 export default function Screen() {
@@ -41,6 +16,7 @@ export default function Screen() {
   return(
     <>
     <ActiveRouteProvider>
+      <FilterProvider>
     <Titlebar className="fixed top-0 right-0" WINDOW_NAME="desktop"/>
     <div className="grid grid-cols-5">
       <MemoryRouter>
@@ -54,6 +30,7 @@ export default function Screen() {
         </Routes>
       </MemoryRouter>
     </div>
+    </FilterProvider>
     </ActiveRouteProvider>
     </>
   )
