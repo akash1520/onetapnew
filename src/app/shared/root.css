@@ -13,10 +13,41 @@ html, body{
   width: 100%;
 }
 
-::-webkit-scrollbar{
-  width: 0px; 
-  height: 0px;
+*:not(.scrollbar)::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
+
+.scrollbar{
+  margin:0 5px;
+}
+
+/* Hide scrollbar for Webkit/Blink */
+.scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar::-webkit-scrollbar-button {
+  background-color: inherti; /* Change the background color */
+  height: 0; /* Adjust height */
+  width: 0; /* Adjust width */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: grey;
+  border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #7A43F0;
+  border-radius: 10px;
+  border: 2px solid transparent;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #C38CFF;
+}
+
 
 :root {
   --neutral-1: #262626;

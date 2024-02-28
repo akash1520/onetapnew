@@ -13,10 +13,10 @@ export const ChallengesLeft = () => {
         <h1 className="font-Impact py-2">Challenges</h1>
         <div className="flex flex-col">
           <ul className="flex flex-col gap-5">
-            <Challenge/>
-            <Challenge/>
-            <Challenge/>
-            <Challenge/>
+            <Challenge completed={10} total={100} task="Kill all the enemies"/>
+            <Challenge completed={30} total={100} task="Take 5 headshots"/>
+            <Challenge completed={78} total={100} task="Kill 5 enemies using SMG."/>
+            <Challenge completed={34} total={100} task="Survive for 15 mins."/>
           </ul>
         </div>
       </div>

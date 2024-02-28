@@ -1,10 +1,10 @@
-export const HEARTHSTONE_CLASS_ID = 9898;
+export const VALORANT_CLASS_ID = 21640;
 
 export function getHearthstoneGame(): Promise<overwolf.games.GetRunningGameInfoResult | null> {
   return new Promise((resolve) => {
     overwolf.games.getRunningGameInfo((result) => {
       resolve(
-        result && result.classId === HEARTHSTONE_CLASS_ID ? result : null,
+        result && result.classId === VALORANT_CLASS_ID ? result : null,
       );
     });
   });

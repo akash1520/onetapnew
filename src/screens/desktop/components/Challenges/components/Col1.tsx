@@ -9,10 +9,6 @@ import LevelCard from "./ChallengeLeft/LevelCard";
 export default function Col1() {
   return (
     <div className="col-start-1 col-end-3">
-      <div className="flex gap-10">
-        <h1 className="text-2xl font-Impact">Ongoing Challenges</h1>
-        <h1 className="text-2xl font-Impact">Completed Challenges</h1>
-      </div>
       <div className="flex gap-5">
         <ChallengesLeft />
         <Col2 />

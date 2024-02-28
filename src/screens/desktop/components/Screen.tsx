@@ -9,6 +9,9 @@ import Challenges from "./Challenges/Challenges";
 import Leaderboard from "./Leaderboard/Leaderboard";
 import { ActiveRouteProvider } from "./Contexts/ActiveRouteContext";
 import { FilterProvider } from "./Contexts/FilterContext";
+import Inventory from "./Inventory/Inventory";
+import Page from "./Inventory/Page";
+import Marketplace from "./Marketplace/Marketplace";
 
 
 export default function Screen() {
@@ -22,11 +25,14 @@ export default function Screen() {
       <MemoryRouter>
         <Sidebar className="fixed left-0 top-0 col-span-1 row-span-5"/>
         <Header className="col-start-2 col-span-4 row-span-2"/>
+        <Inventory/>
         <Routes>
           <Route path="/" element={<Home className="grow mt-10 col-start-2 col-span-4" />} />
           <Route path="/onboard" element={<UserForm className="grow col-start-2 col-span-4" />} />
           <Route path="/challenges" element={<Challenges className="grow col-start-2 col-span-4" />} />
           <Route path="/leaderboard" element={<Leaderboard className="grow col-start-2 col-span-4" />} />
+          <Route path="/inventory" element={<Page className="grow col-start-2 col-span-4" />} />
+          <Route path="/marketplace" element={<Marketplace className="grow col-start-2 col-span-4" />} />
         </Routes>
       </MemoryRouter>
     </div>
