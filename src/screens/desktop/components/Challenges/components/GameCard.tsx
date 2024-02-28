@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useFilterContext } from '../../Contexts/FilterContext';
 
-export default function GameCard({ className, id }:{className: string, id?: string}) {
+export default function GameCard({ className, id, img_src }:{className: string, id?: string, img_src?:string}) {
     const {gameId, handleFilterChange} = useFilterContext()
     const [isChecked, setIsChecked] = useState(false);
    
@@ -34,7 +34,7 @@ export default function GameCard({ className, id }:{className: string, id?: stri
                     )}
                 </div>
             </label>
-            <img src='/images/image 95.png' className='absolute bottom-0 right-0' alt=''/>
+            {img_src?<img src={`/images/${img_src}.png`} className="absolute h-28 bottom-0 right-3" alt=""/>:<img src='/images/image 95.png' className='absolute h-32 bottom-0 right-5' alt=''/>}
         </div>
     );
 }

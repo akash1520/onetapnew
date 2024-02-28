@@ -110,11 +110,13 @@ export default function Leaderboard({ className }: { className: string }) {
         if (!gameData.ok) {
           throw new Error("Failed to fetch data");
         }
-
         const jsonData = await gameData.json();
         setGameData(jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setTimeout(()=>{
+          fetchData()
+        },5000)
       }
     };
 
@@ -149,12 +151,16 @@ export default function Leaderboard({ className }: { className: string }) {
             </div>
           </div>
           <Filter className="w-[48dvw]">
-            <GameCard id="1" className="w-40" />
-            <GameCard id="2" className="w-40" />
-            <GameCard id="3" className="w-40" />
-            <GameCard id="4" className="w-40" />
-            <GameCard id="5" className="w-40" />
-            <GameCard id="6" className="w-40" />
+            <GameCard img_src="pubg" id="1" className="w-40" />
+            <GameCard img_src="dota2" id="2" className="w-40" />
+            <GameCard img_src="apex_legends" id="3" className="w-40" />
+            <GameCard img_src="cod_warzone" id="4" className="w-40" />
+            <GameCard img_src="cs_go" id="5" className="w-40" />
+            <GameCard img_src="hearthstone" id="6" className="w-40" />
+            <GameCard img_src="fortnite" id="7" className="w-40" />
+            <GameCard img_src="overwatch" id="8" className="w-40" />
+            <GameCard img_src="ll" id="9" className="w-40" />
+            <GameCard img_src="pubg" id="10" className="w-40" />
           </Filter>
         </div>
       </div>

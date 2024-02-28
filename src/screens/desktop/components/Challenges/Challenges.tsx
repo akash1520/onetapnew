@@ -11,19 +11,13 @@ export default function Challenges({ className }: ChallengesProps) {
     <div className={`${className} mt-5 grid grid-cols-3`}>
       <Col1/>
         <Filter>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
-              <GameCard className="w-36"/>
+          <GameCard img_src="pubg" className="w-36"/>
+          <GameCard img_src="dota2" className="w-36"/>
+          <GameCard img_src="apex_legends" className="w-36"/>
+          <GameCard img_src="cod_warzone" className="w-36"/>
+          <GameCard img_src="cs_go" className="w-36"/>
+          <GameCard img_src="fortnite" className="w-36"/>
+          <GameCard img_src="hearthstone" className="w-36"/>
    </Filter>
     </div>
   );
