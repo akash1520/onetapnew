@@ -26,6 +26,7 @@ export default function Screen() {
         <Sidebar className="fixed left-0 top-0 col-span-1 row-span-5"/>
         <Header className="col-start-2 col-span-4 row-span-2"/>
         <Inventory/>
+        <Inventory/>
         <Routes>
           <Route path="/" element={<Home className="grow mt-10 col-start-2 col-span-4" />} />
           <Route path="/onboard" element={<UserForm className="grow col-start-2 col-span-4" />} />
