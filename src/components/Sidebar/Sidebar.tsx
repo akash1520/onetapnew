@@ -15,6 +15,7 @@ export default function Sidebar({className}:{className:string}) {
           <ListCompoenent iconSrc="inventory" to="/inventory">Inventory</ListCompoenent>
           <ListCompoenent iconSrc="leaderboard" to="/leaderboard">Leaderboard</ListCompoenent>
           <ListCompoenent iconSrc="subscription" to="/subscription">Subscription</ListCompoenent>
+          <ListCompoenent iconSrc="subscription" to="/overview">Overview</ListCompoenent>
         </ul>
       </div>
     </div>

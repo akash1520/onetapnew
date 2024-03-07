@@ -22,7 +22,8 @@
     "game_targeting": {
       "type": "dedicated",
       "game_ids": [
-        9898, 21640
+        9898,
+        21640
       ]
     },
     "launch_events": [
@@ -30,14 +31,16 @@
         "event": "GameLaunch",
         "event_data": {
           "game_ids": [
-            9898, 21640
+            9898,
+            21640
           ]
         },
         "start_minimized": true
       }
     ],
     "game_events": [
-      9898, 21640
+      9898,
+      21640
     ],
     "start_window": "background",
     "windows": {

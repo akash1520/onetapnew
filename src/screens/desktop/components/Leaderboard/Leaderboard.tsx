@@ -4,6 +4,9 @@ import GameCard from "../Challenges/components/GameCard";
 import { useFilterContext } from "../Contexts/FilterContext";
 import Filter from "../Filter";
 import LeaderboardBanner from "./LeaderboardBanner";
+import { useDispatch } from "react-redux";
+import { fetchLeaderboardData } from "screens/desktop/stores/desktop";
+import { AsyncThunkAction, AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
 
 interface GameData {
   rank: number;
@@ -99,10 +102,14 @@ const Record = ({
 export default function Leaderboard({ className }: { className: string }) {
   const { gameId } = useFilterContext();
   const [gameData, setGameData] = useState<GameData[]|null>();
+  const dispatch =  useDispatch<AsyncThunkAction<any, string, AsyncThunkConfig>>()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+
+        dispatch(fetchLeaderboardData(gameId))
+
         const gameData = await fetch(
           `http://localhost:3002/leaderboard/game-specific/${gameId}`
         );
