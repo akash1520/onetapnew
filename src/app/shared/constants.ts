@@ -5,11 +5,11 @@
 //@see https://overwolf.github.io/docs/api/overwolf-games-events-hearthstone
 export const REQUIRED_FEATURES = [
   "gep_internal",
-  "scene_state",
-  "collection",
-  "decks",
-  "match",
-  "match-info",
+  "me",
+  "game_info",
+  "match_info",
+  "kill",
+  "death",
 ];
 export const RETRY_TIMES = 10;
 

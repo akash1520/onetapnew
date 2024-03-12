@@ -13,7 +13,7 @@ export const EarntItem = ({
   src_img
 }: {
   game_name: string;
-  amount: Number;
+  amount: number;
   src_img:string;
 }) => {
   return (
@@ -48,7 +48,7 @@ export const SpentItem =({game_name, price="100", amount_currency, className}:{g
     )
 }
 
-export const EarntSection = ({ inventoryOpen, data }: { inventoryOpen: Number, data?:CoinsEarned[] }) => {
+export const EarntSection = ({ inventoryOpen, data }: { inventoryOpen: number, data?:CoinsEarned[] }) => {
   return (
     <div className={`${inventoryOpen !== 3 ? "flex flex-col" : "hidden"}`}>
       <div className="flex flex-col w-full overflow-y-scroll scrollbar">
@@ -68,7 +68,7 @@ export const EarntSection = ({ inventoryOpen, data }: { inventoryOpen: Number, d
   );
 };
 
-export const SpentSection = ({ inventoryOpen, data }: { inventoryOpen: Number, data?:CoinsSpend[] }) => {
+export const SpentSection = ({ inventoryOpen, data }: { inventoryOpen: number, data?:CoinsSpend[] }) => {
     return (
       <div className={`${inventoryOpen === 3 ? "flex" : "hidden"}`}>
         <div className="flex flex-row px-1 h-[47dvh] gap-2 flex-wrap overflow-y-scroll scrollbar">
@@ -88,7 +88,7 @@ export default function Inventory({ className }: InventoryProps) {
   const dispatch = useDispatch();
   const { inventoryOpen } = useSelector((state: any) => state.desktop);
 
-  const handleClick = (num: Number) => {
+  const handleClick = (num: number) => {
     dispatch(setInventoryOpen(num));
   };
 

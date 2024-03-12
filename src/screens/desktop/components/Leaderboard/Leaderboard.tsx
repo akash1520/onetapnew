@@ -6,7 +6,7 @@ import Filter from "../Filter";
 import LeaderboardBanner from "./LeaderboardBanner";
 import { useDispatch } from "react-redux";
 import { fetchLeaderboardData } from "screens/desktop/stores/desktop";
-import { AsyncThunkAction, AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
+import { AppDispatch } from "app/shared/store";
 
 interface GameData {
   rank: number;
@@ -102,7 +102,7 @@ const Record = ({
 export default function Leaderboard({ className }: { className: string }) {
   const { gameId } = useFilterContext();
   const [gameData, setGameData] = useState<GameData[]|null>();
-  const dispatch =  useDispatch<AsyncThunkAction<any, string, AsyncThunkConfig>>()
+  const dispatch =  useDispatch<AppDispatch>()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -128,7 +128,7 @@ export default function Leaderboard({ className }: { className: string }) {
     };
 
     fetchData();
-  }, [gameId]);
+  }, [gameId, dispatch]);
 
   return (
     <>

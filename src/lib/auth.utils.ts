@@ -5,7 +5,6 @@ import {
   TokenDetails,
   WINDOW_NAMES,
 } from "app/shared/constants";
-import { Session } from "@supabase/supabase-js";
 import { useWindow } from "overwolf-hooks";
 import { ConsoleAuthError } from "../app/shared/Errors.utils";
 
