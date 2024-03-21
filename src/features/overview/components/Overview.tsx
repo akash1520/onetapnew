@@ -13,16 +13,23 @@ export const Overview = ({className}:{className:string}) => {
 
   useEffect(() => {
 
+
     if (flag) {
+      console.log(`${flag} hey flag is working`)
       // Using the fetch API to send the data
-      fetch("http://localhost:30000/challenges/update-completed-challenges", {
+        fetch("http://localhost:3000/challenges/update-completed-challenges", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ userId: 2, gameId: 2, eventData, infoData }),
       })
-      .then(response => response.json()) // Convert the response to JSON
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        return response.json();
+      })// Convert the response to JSON
       .then(data => {
         console.log(data);
       })

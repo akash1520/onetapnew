@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Timestamp {
   timestamp: number;
@@ -28,16 +28,16 @@ const backgroundSlice = createSlice({
   initialState,
   reducers: {
     setEvent(state, action: EventPayload) {
-      action.payload.events.forEach(event => {
-      if(event.name==="match_end"){
-        console.log("state end has found");
+      console.log("event:"+(JSON.stringify(action.payload, null, 2)));
+      const matchEndEventFound = action.payload.events.find(event => event.name === "match_end");
+      if (matchEndEventFound) {
+        console.log("Match end has been found.");
         state.flag = true;
       }
-      });
-      
       state.events.push(action.payload);
     },
     setInfo(state, action: InfoPayload) {
+      console.log("info:"+(JSON.stringify(action.payload, null, 2)));
       state.infos.push(action.payload);
     },
   },

@@ -98,7 +98,7 @@ export default function Inventory({ className }: InventoryProps) {
   useEffect(() => {
 
     async function getData() {
-        const res = await fetch("http://localhost:3002/inventory/get-all-user-info/3");
+        const res = await fetch("http://localhost:3000/inventory/get-all-user-info/3");
         if (res.ok) setData(await res.json());
       }
 
