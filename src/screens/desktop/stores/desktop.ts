@@ -39,7 +39,7 @@ export const fetchLeaderboardData = createAsyncThunk<
   async (gameId, { rejectWithValue }) => {
     try {
       const response = await fetch(
-        `https://localhost:3002/leaderboard/game-specific/${gameId}`
+        `https://localhost:3000/leaderboard/game-specific/${gameId}`
       );
       if (!response.ok) throw new Error('Network response was not ok');
       return (await response.json()) as Array<LeaderboardDataPayload>;

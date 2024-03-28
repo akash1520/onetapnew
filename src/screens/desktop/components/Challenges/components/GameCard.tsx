@@ -13,6 +13,8 @@ export default function GameCard({ className, id, img_src }:{className: string, 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
         id && handleFilterChange(id)
+        console.log(`Selected game id ${id}`);
+        
     };
 
     return (

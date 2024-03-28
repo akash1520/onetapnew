@@ -3,7 +3,6 @@ import { ChallengesLeft } from "./ChallengeLeft/ChallengesLeft";
 import Banner from "components/Banner/Banner";
 import Progressbar from "./ChallengeLeft/Progressbar";
 import Button from "components/Button/Button";
-import Card from "components/CardsCarousel/Card";
 import LevelCard from "./ChallengeLeft/LevelCard";
 
 export default function Col1() {

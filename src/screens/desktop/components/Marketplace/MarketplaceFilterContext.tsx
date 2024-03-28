@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 // Define the shape of the context value
-interface FilterContextType {
+interface MarketPlaceFilterContextType {
   filters: string[];
   updateFilters: (selectedFilter: string[]) => void;
 }
 
 // Create a context with an undefined initial value but specify the type
-const FilterContext = createContext<FilterContextType | undefined>(undefined);
+const MarketPlaceFilterContext = createContext<MarketPlaceFilterContextType | undefined>(undefined);
 
 // Props type for the provider to accept children
 interface FilterProviderProps {
@@ -46,15 +46,15 @@ export function FilterProvider({ children }: FilterProviderProps) {
   
 
   return (
-    <FilterContext.Provider value={{ filters, updateFilters }}>
+    <MarketPlaceFilterContext.Provider value={{ filters, updateFilters }}>
       {children}
-    </FilterContext.Provider>
+    </MarketPlaceFilterContext.Provider>
   );
 }
 
 // Custom hook to use the filter context
 export function useFilter() {
-  const context = useContext(FilterContext);
+  const context = useContext(MarketPlaceFilterContext);
   if (context === undefined) {
     throw new Error('useFilter must be used within a FilterProvider');
   }

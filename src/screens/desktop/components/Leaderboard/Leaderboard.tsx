@@ -111,7 +111,7 @@ export default function Leaderboard({ className }: { className: string }) {
         dispatch(fetchLeaderboardData(gameId))
 
         const gameData = await fetch(
-          `http://localhost:3002/leaderboard/game-specific/${gameId}`
+          `http://localhost:3000/leaderboard/game-specific/${gameId}`
         );
 
         if (!gameData.ok) {
@@ -140,7 +140,7 @@ export default function Leaderboard({ className }: { className: string }) {
         <div className="mt-8 flex gap-10 flex-row">
           <div className="rounded-lg w-full">
             <h1 className="text-2xl font-Impact">Ranking</h1>
-            <div className="flex mt-4 py-8 px-4 flex-col bg-gradient-to-t from-[#342249] via-[#331E4B]  to-[#683C98] gap-4  border-onetapViolet">
+            <div className="flex mt-4 py-8 flex-col bg-gradient-to-t gap-4  border-onetapViolet">
               {
                 gameData && gameData.map(
                   (game:GameData) => (
