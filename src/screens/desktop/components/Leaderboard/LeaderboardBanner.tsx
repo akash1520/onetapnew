@@ -1,10 +1,10 @@
 export function LbBox({imgSrc, num, textSrc}:{imgSrc:string, num:number, textSrc:string}) {
   return (
     <div className="bg-[#3E3E3E]">
-      <div className="flex justify-center items-center py-2 px-2 bg-gradient-to-r from-[#B38BF5] to-[#967ECA]">
+      <div className="flex justify-center items-center p-3 bg-gradient-to-r from-[#B38BF5] to-[#967ECA]">
           <img src={`/icons/${imgSrc}`} alt=""/>
       </div>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col p-1 items-center">
         <h2 className="font-Impact mx-3 text-onetapViolet">{num}</h2>
         <h2 className="font-Impact mx-3">{textSrc}</h2>
       </div>

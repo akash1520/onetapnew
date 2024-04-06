@@ -13,6 +13,7 @@ import Inventory from "./Inventory/Inventory";
 import Page from "./Inventory/Page";
 import Marketplace from "./Marketplace/Marketplace";
 import { Overview } from "features/overview";
+import UserProfile from "./UserProfile/UserProfile";
 
 
 export default function Screen() {
@@ -36,6 +37,7 @@ export default function Screen() {
           <Route path="/inventory" element={<Page className="grow col-start-2 col-span-4" />} />
           <Route path="/marketplace" element={<Marketplace className="grow col-start-2 col-span-4" />} />
           <Route path="/overview" element={<Overview className="grow col-start-2 col-span-4" />} />
+          <Route path="/userProfile" element={<UserProfile className="grow col-start-2 col-span-4" />} />
         </Routes>
       </MemoryRouter>
     </div>

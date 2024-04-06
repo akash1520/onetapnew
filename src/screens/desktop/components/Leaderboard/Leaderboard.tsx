@@ -119,6 +119,7 @@ export default function Leaderboard({ className }: { className: string }) {
         }
         const jsonData = await gameData.json();
         setGameData(jsonData);
+        console.log(jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
         setTimeout(()=>{

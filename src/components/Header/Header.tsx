@@ -1,5 +1,6 @@
 import { logOut } from "lib/auth.utils";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { setInventoryOpen } from "screens/desktop/stores/desktop";
 
 export default function Header({ className }: { className: string }) {
@@ -21,7 +22,9 @@ export default function Header({ className }: { className: string }) {
           <img className="mx-1" src="/icons/coin.svg" alt="" />
           <span className="mx-1">1800</span>
         </span>
-        <img onClick={logOut} className="mx-1" src="/icons/user.svg" alt="" />
+        <Link to={"/userProfile"}>
+          <img className="mx-1" src="/icons/user.svg" alt="" />
+        </Link>
       </span>
     </div>
   );

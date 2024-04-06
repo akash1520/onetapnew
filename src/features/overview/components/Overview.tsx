@@ -22,7 +22,7 @@ export const Overview = ({className}:{className:string}) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId: 2, gameId: 2, eventData, infoData }),
+        body: JSON.stringify({ userId: 2, gameId: 2, gameData:{eventData, infoData} }),
       })
       .then(response => {
         if (!response.ok) {
