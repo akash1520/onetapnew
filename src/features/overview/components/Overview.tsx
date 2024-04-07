@@ -7,8 +7,7 @@ import { useEffect } from "react";
 
 export const Overview = ({className}:{className:string}) => {
   const { events, infos } = useData();
-  const eventData = useSelector((state:RootReducer)=>state.background.events)
-  const infoData = useSelector((state:RootReducer)=>state.background.infos)
+  const gameData = useSelector((state:RootReducer)=>state.background.gameData)
   const flag = useSelector((state:RootReducer)=>state.background.flag)
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export const Overview = ({className}:{className:string}) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId: 2, gameId: 2, gameData:{eventData, infoData} }),
+        body: JSON.stringify({ userId: 3, gameId: 2, gameData:gameData }),
       })
       .then(response => {
         if (!response.ok) {
@@ -37,7 +36,7 @@ export const Overview = ({className}:{className:string}) => {
         console.error("There was an error posting the data:", error);
       });
     }
-  }, [eventData, infoData, flag]);
+  }, [gameData, flag]);
 
   return (
     <div className={`overview ${className}`}>

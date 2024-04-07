@@ -6,9 +6,7 @@ import { useFilterContext } from "screens/desktop/components/Contexts/FilterCont
 
 interface ChallengeData {
   id: number;
-  requirements: {
-    kill: number;
-  };
+  requirements: Record<string, string>;
   startTime: string;
   endTime: string;
   type: string;
@@ -18,13 +16,11 @@ interface ChallengeData {
   };
 }
 
-type ChallengeArray = ChallengeData[];
-
 
 export const ChallengesLeft = () => {
 
   const {gameId} = useFilterContext()
-  const [challenges, setChallenges] = useState<ChallengeArray>([]);
+  const [challenges, setChallenges] = useState<ChallengeData[]>([]);
 
   useEffect(() => {
     // Use a proper URL and handle potential errors
@@ -54,7 +50,7 @@ export const ChallengesLeft = () => {
         <div className="flex flex-col">
           <ul className="flex flex-col gap-5">
           {challenges.map((challenge) => (
-            <Challenge key={challenge.id} completed={10} total={100} task="Kill all the enemies" />
+            <Challenge key={challenge.id} completed={10} total={100} task={challenge.requirements} />
           ))}
           </ul>
         </div>

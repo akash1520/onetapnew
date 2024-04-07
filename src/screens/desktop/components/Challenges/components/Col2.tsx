@@ -25,7 +25,6 @@ useEffect(() => {
   
     } catch (error) {
       console.error("Error fetching data:", error);
-      setTimeout(fetchData,5000)
     }
   };
 

@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 
-export default function Button({children, className}:{children:ReactNode, className?:string}) {
+export default function Button({children, onClick, className}:{children:ReactNode, onClick?:VoidFunction , className?:string}) {
   return (
-    <button className={`${className} bg-gradient-to-r border-solid border-[1px] border-[#9D9D9D] rounded-sm from-[#692CCD] to-[#B87FF6]`}>{children}</button>
+    <button onClick={onClick} className={`${className} bg-gradient-to-r border-solid border-[1px] border-[#9D9D9D] rounded-sm from-[#692CCD] to-[#B87FF6]`}>{children}</button>
   )
 }

@@ -102,7 +102,7 @@ const initialState: BackgroundState = {
     game_mode: "",
     damage_taken: 0,
   },
-  userId: "",
+  userId: "3",
   userInfo: {
     id: 0,
     userName: "",

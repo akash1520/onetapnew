@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Progressbar from './components/ChallengeLeft/Progressbar';
 import { useFilterContext } from '../Contexts/FilterContext';
+import { useSelector } from 'react-redux';
 
 export const ChallengeCompletedCard = ({className}:{className?: string})=>{
     return(
@@ -32,16 +33,15 @@ export const ChallengeCompletedCard = ({className}:{className?: string})=>{
 
 export default function ChallengesCompleted({className}:{className?: string}) {
     const [challenges, setChallenges] = useState()
+    const {userId} = useSelector((state:any)=>state.background)
     const {gameId} = useFilterContext()
-    const userId = 1;
-
-    console.log(challenges);
 
 
     useEffect(() => {
     const fetchData = async (gameId:string) => {
         try {
     
+            console.log(`gameId ${gameId} ${userId}`)
         const gameData = await fetch(
             `http://localhost:3000/challenges/completed-challenges/${gameId}/${userId}`
         );
@@ -50,16 +50,17 @@ export default function ChallengesCompleted({className}:{className?: string}) {
             throw new Error("Failed to fetch data");
         }
         const jsonData = await gameData.json();
+        console.log(jsonData);
+        
         setChallenges(jsonData);
     
         } catch (error) {
         console.error("Error fetching data:", error);
-        setTimeout(fetchData,5000)
         }
     };
 
     fetchData(gameId);
-    }, [gameId]);
+    }, [gameId, userId]);
 
   return (
     <div className="col-start-1 flex gap-8 my-5 flex-col col-end-3">

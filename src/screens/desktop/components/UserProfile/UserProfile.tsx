@@ -6,7 +6,6 @@ import { LbBox } from "../Leaderboard/LeaderboardBanner";
 import Filter from "../Filter";
 import GameCard from "../Challenges/components/GameCard";
 import { useFormik } from "formik";
-import background from "screens/background";
 
 export default function UserProfile({ className }: { className: string }) {
   const [displayPage, setDisplayPage] = useState(false);

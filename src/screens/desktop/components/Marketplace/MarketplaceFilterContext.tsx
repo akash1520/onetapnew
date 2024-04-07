@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-// Define the shape of the context value
+// Define the shape of the context value, now to hold a single string filter value
 interface MarketPlaceFilterContextType {
-  filters: string[];
-  updateFilters: (selectedFilter: string[]) => void;
+  filter: string;
+  updateFilter: (selectedFilter: string) => void;
 }
 
 // Create a context with an undefined initial value but specify the type
@@ -15,38 +15,14 @@ interface FilterProviderProps {
 }
 
 export function FilterProvider({ children }: FilterProviderProps) {
-  const [filters, setFilters] = useState<string[]>([]);
+  const [filter, setFilter] = useState<string>(''); // State to hold a single filter
 
-  const updateFilters = (selectedFilters: string[]) => {
-    setFilters((currentFilters) => {
-      // Create a new set from the current filters for easy addition/removal
-      const updatedFilterSet = new Set(currentFilters);
-  
-      // Loop through the selected filters
-      selectedFilters.forEach((filter) => {
-        if (updatedFilterSet.has(filter)) {
-          // If the filter is already in the set, it means it remains selected, do nothing
-        } else {
-          // If the filter is not in the set, it's a new selection, add it
-          updatedFilterSet.add(filter);
-        }
-      });
-  
-      // Filters that are not in the selectedFilters should be removed
-      currentFilters.forEach((filter) => {
-        if (!selectedFilters.includes(filter)) {
-          updatedFilterSet.delete(filter);
-        }
-      });
-  
-      // Return the new filters array
-      return Array.from(updatedFilterSet);
-    });
+  const updateFilter = (selectedFilter: string) => {
+    setFilter(selectedFilter); // Update the filter directly
   };
-  
 
   return (
-    <MarketPlaceFilterContext.Provider value={{ filters, updateFilters }}>
+    <MarketPlaceFilterContext.Provider value={{ filter, updateFilter }}>
       {children}
     </MarketPlaceFilterContext.Provider>
   );
