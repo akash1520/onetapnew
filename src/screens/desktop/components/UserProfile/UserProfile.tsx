@@ -89,7 +89,7 @@ function MyRanking() {
   return (
     <div className="flex flex-col items-start p-20">
       <div className="flex flex-col items-center">
-        <h2 className="font-display text-3xl">{userInfo.userName.toLocaleUpperCase()}{("akashhuyaar").toLocaleUpperCase()}</h2>
+        <h2 className="font-display text-3xl">{userInfo.userName.toLocaleUpperCase()}</h2>
         <Avatar />
       </div>
       <div>

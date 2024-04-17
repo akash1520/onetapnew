@@ -3,7 +3,7 @@
 
 //Heathstone Game Features
 //@see https://overwolf.github.io/docs/api/overwolf-games-events-hearthstone
-export const REQUIRED_FEATURES = [
+export const VALORANT_REQUIRED_FEATURES = [
   "gep_internal",
   "me",
   "game_info",

@@ -3,14 +3,16 @@ import { Feed } from "components/Feed";
 import { Title } from "components/Title/Title";
 import { useSelector } from "react-redux";
 import "./styles/Screen.css";
+import Notification from "./Notification";
 
 const Screen = () => {
   const { events, infos } = useSelector(
-    (state: RootReducer) => state.background,
+    (state: RootReducer) => state.background
   );
 
   return (
     <div className="ingame">
+      <Notification/>
       <Title color="white">InGame Screen</Title>
       <Feed
         title="Events"

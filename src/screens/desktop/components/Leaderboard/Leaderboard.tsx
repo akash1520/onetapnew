@@ -4,7 +4,7 @@ import GameCard from "../Challenges/components/GameCard";
 import { useFilterContext } from "../Contexts/FilterContext";
 import Filter from "../Filter";
 import LeaderboardBanner from "./LeaderboardBanner";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchLeaderboardData } from "screens/desktop/stores/desktop";
 import { AppDispatch } from "app/shared/store";
 
@@ -37,12 +37,15 @@ const ScoreBox = ({
 };
 
 const YourScoreBox = () => {
+
+  const {userInfo} = useSelector((state:any)=>state.background)
+
   return (
     <div className="border-onetapViolet bg-[#222222] border-[1px] relative flex flex-col pt-16 items-center grow mr-4">
       <div className="flex w-full justify-around flex-row">
-        <ScoreBox score={30} scoreText="Your Rank" />
-        <ScoreBox score={1800} scoreText="Coins" />
-        <ScoreBox score={30} scoreText="Level" />
+        <ScoreBox score={userInfo.globalRanking} scoreText="Your Rank" />
+        <ScoreBox score={userInfo.balance} scoreText="Coins" />
+        <ScoreBox score={userInfo.level} scoreText="Level" />
       </div>
       <div>
         <div className="flex items-center gap-2 w-80">
@@ -54,7 +57,7 @@ const YourScoreBox = () => {
         </div>
       </div>
       <div className="flex flex-col p-3 font-Inter justify-center">
-        <h1>You're at rank 30!</h1>
+        <h1>You're at rank {userInfo.globalRanking}!</h1>
         <p className="text-sm text-[#9D9D9D]">
           Just 200 points away from being a Challenge Conqueror.
         </p>

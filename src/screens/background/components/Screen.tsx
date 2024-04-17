@@ -1,5 +1,5 @@
 import {
-  REQUIRED_FEATURES,
+  VALORANT_REQUIRED_FEATURES,
   WINDOW_NAMES,
   RETRY_TIMES,
   DISPLAY_OVERWOLF_HOOKS_LOGS,
@@ -35,7 +35,7 @@ const BackgroundWindow = () => {
           })
         ),
     },
-    REQUIRED_FEATURES,
+    VALORANT_REQUIRED_FEATURES,
     RETRY_TIMES,
     DISPLAY_OVERWOLF_HOOKS_LOGS
   );

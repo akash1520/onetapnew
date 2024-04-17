@@ -3,7 +3,32 @@ import Progressbar from './components/ChallengeLeft/Progressbar';
 import { useFilterContext } from '../Contexts/FilterContext';
 import { useSelector } from 'react-redux';
 
-export const ChallengeCompletedCard = ({className}:{className?: string})=>{
+export const ChallengeCompletedCard = ({className, challengeId}:{className?: string, challengeId:string})=>{
+    const [challenge, setChallenge] = useState<any>()
+
+
+    useEffect(() => {
+    const fetchData = async (challengeId:string) => {
+        try {
+        const gameData = await fetch(
+            `http://localhost:3000/challenges/get-completed-challenge/${challengeId}`
+        );
+    
+        if (!gameData.ok) {
+            throw new Error("Failed to fetch data");
+        }
+        const jsonData = await gameData.json();
+        console.log(jsonData);
+        
+        setChallenge(jsonData);
+    
+        } catch (error) {
+        console.error("Error fetching data:", error);
+        }
+    };
+
+    fetchData(challengeId);
+    }, [challengeId]);
     return(
         <div className='flex px-5 py-2 bg-[#1C1C1C] w-[80%]'>
             <div className={`bg-black ${className} my-2 flex flex-col`}>
@@ -20,11 +45,11 @@ export const ChallengeCompletedCard = ({className}:{className?: string})=>{
                 </div>
             </div>
             <div className='p-6 w-full'>
-                <h2 className='my-2'>Dive into Challenges</h2>
-                <Progressbar completed={70} total={100} />
+                <h2 className='my-2'>{challenge.name}</h2>
+                <Progressbar completed={Math.floor(Math.random() * 100)} total={100} />
                 <div className='flex flex-col gap-1 my-2'>
                     <p>Earned</p>
-                    <div className='flex gap-2'><img alt='coin' src="icons/coin.svg"/> 500</div>
+                    <div className='flex gap-2'><img alt='coin' src="icons/coin.svg"/>{Math.floor(Math.random() * 100)}</div>
                 </div>
             </div>
         </div>
@@ -32,7 +57,7 @@ export const ChallengeCompletedCard = ({className}:{className?: string})=>{
 }
 
 export default function ChallengesCompleted({className}:{className?: string}) {
-    const [challenges, setChallenges] = useState()
+    const [challenges, setChallenges] = useState<any>()
     const {userId} = useSelector((state:any)=>state.background)
     const {gameId} = useFilterContext()
 
@@ -64,10 +89,10 @@ export default function ChallengesCompleted({className}:{className?: string}) {
 
   return (
     <div className="col-start-1 flex gap-8 my-5 flex-col col-end-3">
-        <ChallengeCompletedCard/>
-        <ChallengeCompletedCard/>
-        <ChallengeCompletedCard/>
-        <ChallengeCompletedCard/>
+        {challenges.forEach((challenge:any) => {
+            return <ChallengeCompletedCard challengeId={challenge.challengeId}/>
+        })
+        }
     </div>
   )
 }

@@ -28,6 +28,28 @@ function parseEventData(eventDataString: string) {
   }
 }
 
+function updateCompletedChallenges(userId:string, gameId:number, gameData:gameData) {
+  fetch("http://localhost:3000/challenges/update-completed-challenges", {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId, gameId, gameData }),
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+      }
+      return response.json();
+  })
+  .then(data => {
+      console.log(data);
+  })
+  .catch(error => {
+      console.error("There was an error posting the data:", error);
+  });
+}
+
 interface Timestamp {
   timestamp: number;
 }
@@ -192,7 +214,8 @@ const backgroundSlice = createSlice({
       );
       if (matchEndEventFound) {
         console.log("Match end has been found.");
-        console.log(JSON.stringify(state.gameData));
+        updateCompletedChallenges("3", 2, state.gameData);
+        state.gameData = initialState.gameData;
         state.flag = true;
       }
       state.events.push(action.payload);
@@ -201,14 +224,14 @@ const backgroundSlice = createSlice({
       if ("info" in action.payload) {
         Object.entries(action.payload.info).forEach((info) => {
           if (info[0] === "kill" && info[1].hasOwnProperty("assists")) {
-            state.gameData.assists = info[1].assists;
+            console.log("it's an assist",info[1].assists);
           } else if (info[0] === "kill" && info[1].hasOwnProperty("kills")) {
-            state.gameData.total_kills = info[1].kills;
+            console.log("it's a kill", info[1].kills);
           } else if (
             info[0] === "kill" &&
             info[1].hasOwnProperty("headshots")
           ) {
-            state.gameData.headshots = info[1].headshots;
+            console.log("it's a headshot",info[1].headshots);
           }
         });
       }
