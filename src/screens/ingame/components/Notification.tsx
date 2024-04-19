@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
-function Notification({ progress = 63 }) {
+function Notifications({completedChallenges}:{completedChallenges:any}){
+  return(
+    <>
+    {completedChallenges.length && completedChallenges.map((completedChallenge:any)=>{
+      console.log("we reached this far");
+      
+      return <Notification completedChallenge={completedChallenge} />
+    })}
+    </>
+  )
+}
+
+function Notification({ progress = 100, completedChallenge }:{progress?:number, completedChallenge:any}) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -45,11 +57,11 @@ function Notification({ progress = 63 }) {
         </svg>
         <div className="pl-5">
           <h4 className="m-0">Challenge Complete!</h4>
-          <p>Your progress has been updated.</p>
+          <p>{completedChallenge.game_challenges.name}</p>
         </div>
       </div>
     </div>
   );
 }
 
-export default Notification;
+export {Notification, Notifications};

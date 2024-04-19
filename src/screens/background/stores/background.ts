@@ -1,130 +1,29 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { parseSafeJSON } from "lib/utils";
-
-function printKeyValuePairs(obj: any, prefix: string = ""): void {
-  Object.entries(obj).forEach(([key, value]) => {
-    // Construct a new prefix for nested objects
-    const newPrefix = prefix ? `${prefix}.${key}` : key;
-
-    if (value !== null && typeof value === "object") {
-      // If the value is a non-null object, recurse
-      printKeyValuePairs(value, newPrefix);
-    } else {
-      // Print the key-value pair
-      console.log(`${newPrefix}: ${value}`);
-    }
-  });
-}
-
-function parseEventData(eventDataString: string) {
-  try {
-    // Parse the JSON string to an object
-    const dataObject = JSON.parse(eventDataString);
-    return dataObject;
-  } catch (error) {
-    console.error("Error parsing event data string:", error);
-    // Return null or an empty object depending on how you want to handle errors
-    return null;
-  }
-}
-
-function updateCompletedChallenges(userId:string, gameId:number, gameData:gameData) {
-  fetch("http://localhost:3000/challenges/update-completed-challenges", {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId, gameId, gameData }),
-  })
-  .then(response => {
-      if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
-      }
-      return response.json();
-  })
-  .then(data => {
-      console.log(data);
-  })
-  .catch(error => {
-      console.error("There was an error posting the data:", error);
-  });
-}
-
-interface Timestamp {
-  timestamp: number;
-}
-
-interface gameData {
-  match_start: number;
-  match_end: number;
-  result: string;
-}
-
-interface valorantGameData extends gameData {
-  total_kills: number;
-  deaths: number;
-  assists: number;
-  headshots: number;
-  spikes_defused: number;
-  spikes_planted: number;
-  damage_done: number;
-  team_scores: number;
-  agent: string;
-  region: string;
-  game_mode: string;
-  damage_taken: number;
-}
-
-interface UserInfo {
-  id: number;
-  userName: string;
-  profilePicture: string | null;
-  userCoustomeId: string;
-  profileName: string;
-  globalRanking: number;
-  balance: number;
-  Auth: string;
-  level: number;
-  premiumUser: boolean;
-}
-
-type OwInfo =
-  | overwolf.games.events.InfoUpdates2Event
-  | overwolf.games.InstalledGameInfo;
-type OwEvent = overwolf.games.events.NewGameEvents;
-type InfoPayload = PayloadAction<Timestamp & OwInfo>;
-type EventPayload = PayloadAction<Timestamp & OwEvent>;
-
-interface BackgroundState {
-  events: Array<Timestamp & OwEvent>;
-  infos: Array<Timestamp & OwInfo>;
-  gameData: valorantGameData;
-  flag: boolean;
-  userInfo: UserInfo;
-  userId: string;
-}
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { BackgroundState, EventPayload, InfoPayload, UserInfo } from "types";
+import { updateCompletedChallenges } from "utils";
 
 const initialState: BackgroundState = {
   events: [],
   infos: [],
   gameData: {
-    match_start: 0,
-    match_end: 0,
-    result: "",
-    total_kills: 0,
-    deaths: 0,
+    match_start: "2024-04-12T07:07:47.441967",
+    match_end: "2024-04-12T07:07:47.441967",
+    match_status: "false",
+    total_kills: 1,
+    deaths: 1,
     assists: 0,
-    headshots: 0,
-    spikes_defused: 0,
+    headshot: 0,
+    spikes_defuse: 0,
     spikes_planted: 0,
+    damage_taken:0,
     damage_done: 0,
     team_scores: 0,
     agent: "",
     region: "",
-    game_mode: "",
-    damage_taken: 0,
+    game_mode: ""
   },
   userId: "3",
+  recentlyCompletedChallenges: [],
   userInfo: {
     id: 0,
     userName: "",
@@ -179,12 +78,15 @@ const backgroundSlice = createSlice({
       action.payload.events.forEach((event) => {
         switch (event.name) {
           case "match_start":
-              state.gameData.match_start = action.payload.timestamp;
+              // const date_start = new Date(action.payload.timestamp);
+              // const date_string_start = date_start.toISOString().replace('Z', '');
+              // state.gameData.match_start = date_string_start;
               break;
       
           case "match_end":
-              state.gameData.match_end = action.payload.timestamp;
-              state.gameData.deaths = parseInt(event.data, 10);
+              // const date_end = new Date(action.payload.timestamp);
+              // const date_string_end = date_end.toISOString().replace('Z', '');
+              // state.gameData.match_end = date_string_end;
               break;
       
           case "kill":
@@ -195,13 +97,13 @@ const backgroundSlice = createSlice({
           case "kill_feed":
               const data = JSON.parse(event.data);
               if (data.headshot) {
-                  state.gameData.headshots = (state.gameData.headshots || 0) + 1;
+                  state.gameData.headshot = (state.gameData.headshot || 0) + 1;
               }
               if (data.assists) {
                   state.gameData.assists = (state.gameData.assists || 0) + 1;
               }
               console.log(`assists number : ${state.gameData.assists}`);
-              console.log(`headshots number : ${state.gameData.headshots}`);
+              console.log(`headshots number : ${state.gameData.headshot}`);
               break;
           }      
         console.log(
@@ -214,38 +116,40 @@ const backgroundSlice = createSlice({
       );
       if (matchEndEventFound) {
         console.log("Match end has been found.");
-        updateCompletedChallenges("3", 2, state.gameData);
+        const response = updateCompletedChallenges("3", 2, state.gameData);
+        console.log("response:", response);
         state.gameData = initialState.gameData;
         state.flag = true;
       }
       state.events.push(action.payload);
     },
     setInfo(state, action: InfoPayload) {
-      if ("info" in action.payload) {
-        Object.entries(action.payload.info).forEach((info) => {
-          if (info[0] === "kill" && info[1].hasOwnProperty("assists")) {
-            console.log("it's an assist",info[1].assists);
-          } else if (info[0] === "kill" && info[1].hasOwnProperty("kills")) {
-            console.log("it's a kill", info[1].kills);
-          } else if (
-            info[0] === "kill" &&
-            info[1].hasOwnProperty("headshots")
-          ) {
-            console.log("it's a headshot",info[1].headshots);
-          }
-        });
-      }
-
-      if ("feature" in action.payload) {
-        console.log(
-          "feature:" + JSON.stringify(action.payload.feature, null, 2)
-        );
-      }
-
       console.log(`Timestamp: ${action.payload.timestamp}`);
-
       state.infos.push(action.payload);
+      // if ("info" in action.payload) {
+      //   Object.entries(action.payload.info).forEach((info) => {
+      //     if (info[0] === "kill" && info[1].hasOwnProperty("assists")) {
+      //       console.log("it's an assist",info[1].assists);
+      //     } else if (info[0] === "kill" && info[1].hasOwnProperty("kills")) {
+      //       console.log("it's a kill", info[1].kills);
+      //     } else if (
+      //       info[0] === "kill" &&
+      //       info[1].hasOwnProperty("headshots")
+      //     ) {
+      //       console.log("it's a headshot",info[1].headshots);
+      //     }
+      //   });
+      // }
+
+      // if ("feature" in action.payload) {
+      //   console.log(
+      //     "feature:" + JSON.stringify(action.payload.feature, null, 2)
+      //   );
+      // }
     },
+    setRecentlyCompletedChallenges( state, action ) {
+      state.recentlyCompletedChallenges = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -266,6 +170,6 @@ const backgroundSlice = createSlice({
   },
 });
 
-export const { setEvent, setInfo } = backgroundSlice.actions;
+export const { setEvent, setInfo, setRecentlyCompletedChallenges } = backgroundSlice.actions;
 
 export default backgroundSlice.reducer;
