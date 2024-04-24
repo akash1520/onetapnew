@@ -1,5 +1,5 @@
 export const HEARTHSTONE_CLASS_ID = 9898;
-export const VALORANT_CLASS_ID = 12345;
+export const VALORANT_CLASS_ID = 21640;
 
 interface SupportedClassIDs {
   [key: number]: boolean;
