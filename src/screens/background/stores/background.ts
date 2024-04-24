@@ -1,7 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BackgroundState, EventPayload, InfoPayload, UserInfo } from "types";
-import { updateCompletedChallenges } from "utils";
-import { gameDataHandlers, processEventData } from "./helperFunctions";
+import { gameDataHandlers } from "./helperFunctions";
 
 const initialState: BackgroundState = {
   events: [],
@@ -79,14 +78,25 @@ const backgroundSlice = createSlice({
   initialState,
   reducers: {
     setEvent(state, action: EventPayload) {
-      state.gameData = processEventData(action, state);
       action.payload.events.forEach((event) => {
         console.log(
           `Event Name: ${event.name}, Data: ${JSON.stringify(event.data)}, Timestamp: ${action.payload.timestamp}`
         );
       });
-
-      gameDataHandlers[state.gameId](state, action);
+      
+      if (isNaN(state.gameId) || !(state.gameId in gameDataHandlers)) {
+        console.error(`No handler for gameId: ${state.gameId}`);
+        return;
+      }
+    
+      const handler = gameDataHandlers[state.gameId];
+      const updatedGameData = handler(state, action);
+      
+      if (updatedGameData) {
+        state.gameData[state.gameId] = updatedGameData;
+      } else {
+        console.error("Handler did not return updated game data");
+      }
       state.events.push(action.payload);
     },
     setInfo(state, action: InfoPayload) {
@@ -95,6 +105,8 @@ const backgroundSlice = createSlice({
     },
     setRecentlyCompletedChallenges(state, action) {
       state.recentlyCompletedChallenges = action.payload;
+    }, setGameId(state, action:PayloadAction<number>){
+      state.gameId = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -116,6 +128,6 @@ const backgroundSlice = createSlice({
   },
 });
 
-export const { setEvent, setInfo, setRecentlyCompletedChallenges } = backgroundSlice.actions;
+export const { setEvent, setInfo, setRecentlyCompletedChallenges, setGameId } = backgroundSlice.actions;
 
 export default backgroundSlice.reducer;
