@@ -1,3 +1,5 @@
+import { setGameId } from "screens/background/stores/background";
+
 export const HEARTHSTONE_CLASS_ID = 9898;
 export const VALORANT_CLASS_ID = 21640;
 
@@ -15,6 +17,7 @@ export function getRunningGame(): Promise<overwolf.games.GetRunningGameInfoResul
   return new Promise((resolve) => {
     overwolf.games.getRunningGameInfo((result) => {
       if (result && SUPPORTED_CLASS_IDS[result.classId]) {
+        setGameId(result.classId);
         resolve(result);
       } else {
         resolve(null);
