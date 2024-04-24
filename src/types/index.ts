@@ -61,7 +61,8 @@ export type EventPayload = PayloadAction<Timestamp & OwEvent>;
 export interface BackgroundState {
   events: Array<Timestamp & OwEvent>;
   infos: Array<Timestamp & OwInfo>;
-  gameData: valorantGameData;
+  gameId: number;
+  gameData: { [gameId: number]: any };
   flag: boolean;
   recentlyCompletedChallenges: Array<ChallengeData>;
   userInfo: UserInfo;

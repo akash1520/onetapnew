@@ -1,27 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BackgroundState, EventPayload, InfoPayload, UserInfo } from "types";
 import { updateCompletedChallenges } from "utils";
-import { processEventData } from "./helperFunctions";
+import { gameDataHandlers, processEventData } from "./helperFunctions";
 
 const initialState: BackgroundState = {
   events: [],
   infos: [],
+  gameId: NaN,
   gameData: {
-    match_start: "2024-04-12T07:07:47.441967",
-    match_end: "2024-04-12T07:07:47.441967",
-    match_status: "false",
-    total_kills: 1,
-    deaths: 1,
-    assists: 0,
-    headshot: 0,
-    spikes_defuse: 0,
-    spikes_planted: 0,
-    damage_taken:0,
-    damage_done: 0,
-    team_scores: 0,
-    agent: "",
-    region: "",
-    game_mode: ""
+    21640: {
+      match_start: "2024-04-12T07:07:47.441967",
+      match_end: "2024-04-12T07:07:47.441967",
+      match_status: "false",
+      total_kills: 1,
+      deaths: 1,
+      assists: 0,
+      headshot: 0,
+      spikes_defuse: 0,
+      spikes_planted: 0,
+      damage_taken: 0,
+      damage_done: 0,
+      team_scores: 0,
+      agent: "",
+      region: "",
+      game_mode: ""
+    }
   },
   userId: "3",
   recentlyCompletedChallenges: [],
@@ -83,23 +86,14 @@ const backgroundSlice = createSlice({
         );
       });
 
-      const matchEndEventFound = action.payload.events.find(
-        (event) => event.name === "match_end"
-      );
-      if (matchEndEventFound) {
-        console.log("Match end has been found.");
-        const response = updateCompletedChallenges("3", 2, state.gameData);
-        console.log("response:", response);
-        state.gameData = initialState.gameData;
-        state.flag = true;
-      }
+      gameDataHandlers[state.gameId](state, action);
       state.events.push(action.payload);
     },
     setInfo(state, action: InfoPayload) {
       console.log(`Timestamp: ${action.payload.timestamp}`);
       state.infos.push(action.payload);
     },
-    setRecentlyCompletedChallenges( state, action ) {
+    setRecentlyCompletedChallenges(state, action) {
       state.recentlyCompletedChallenges = action.payload;
     }
   },
