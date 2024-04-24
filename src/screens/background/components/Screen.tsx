@@ -6,7 +6,7 @@ import {
 } from "app/shared/constants";
 import { useGameEventProvider, useWindow } from "overwolf-hooks";
 import { useCallback, useEffect } from "react";
-import { HEARTHSTONE_CLASS_ID, getHearthstoneGame } from "lib/games";
+import { SUPPORTED_CLASS_IDS, getRunningGame } from "lib/games";
 import { setInfo, setEvent } from "../stores/background";
 import store from "app/shared/store";
 import { log } from "lib/log";
@@ -45,8 +45,8 @@ const BackgroundWindow = () => {
       if (!desktop || !ingame || !login) return;
       log(reason, "src/screens/background/components/Screen.tsx", "startApp");
       if (await checkSession()) {
-        const hearthstone = await getHearthstoneGame();
-        if (hearthstone) {
+        const runningGame = await getRunningGame();
+        if (runningGame) {
           await Promise.all([start(), ingame?.restore(), desktop?.minimize()]);
         } else {
           await Promise.all([stop(), desktop?.restore()]);
@@ -62,11 +62,11 @@ const BackgroundWindow = () => {
   useEffect(() => {
     startApp("on initial load");
     overwolf.games.onGameInfoUpdated.addListener(async (event) => {
-      if (
-        event.runningChanged &&
-        event.gameInfo?.classId === HEARTHSTONE_CLASS_ID
-      ) {
-        startApp("onGameInfoUpdated");
+      if (event.runningChanged && event.gameInfo) {
+        const isSupportedGame = SUPPORTED_CLASS_IDS[event.gameInfo.classId];
+        if (isSupportedGame) {
+          startApp("onGameInfoUpdated");
+        }
       }
     });
 

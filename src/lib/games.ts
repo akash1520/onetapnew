@@ -1,14 +1,28 @@
-export const HEARTHSTONE_CLASS_ID = 21640;
+export const HEARTHSTONE_CLASS_ID = 9898;
+export const VALORANT_CLASS_ID = 12345;
 
-export function getHearthstoneGame(): Promise<overwolf.games.GetRunningGameInfoResult | null> {
+interface SupportedClassIDs {
+  [key: number]: boolean;
+}
+
+
+export const SUPPORTED_CLASS_IDS : SupportedClassIDs = {
+  [HEARTHSTONE_CLASS_ID]: true,
+  [VALORANT_CLASS_ID]: true,
+};
+
+export function getRunningGame(): Promise<overwolf.games.GetRunningGameInfoResult | null> {
   return new Promise((resolve) => {
     overwolf.games.getRunningGameInfo((result) => {
-      resolve(
-        result && result.classId === HEARTHSTONE_CLASS_ID ? result : null,
-      );
+      if (result && SUPPORTED_CLASS_IDS[result.classId]) {
+        resolve(result);
+      } else {
+        resolve(null);
+      }
     });
   });
 }
+
 
 export function getGameInfo(): Promise<any> {
   return new Promise((resolve, reject) => {

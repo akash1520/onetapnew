@@ -1,4 +1,3 @@
-import { logOut } from "lib/auth.utils";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { setInventoryOpen } from "screens/desktop/stores/desktop";

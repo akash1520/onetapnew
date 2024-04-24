@@ -1,5 +1,3 @@
-import Card from 'components/CardsCarousel/Card'
-import React from 'react'
 import { SpentItem } from './Inventory'
 
 export default function Page({className}:{className:string}) {

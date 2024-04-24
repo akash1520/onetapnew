@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BackgroundState, EventPayload, InfoPayload, UserInfo } from "types";
 import { updateCompletedChallenges } from "utils";
+import { processEventData } from "./helperFunctions";
 
 const initialState: BackgroundState = {
   events: [],
@@ -75,37 +76,8 @@ const backgroundSlice = createSlice({
   initialState,
   reducers: {
     setEvent(state, action: EventPayload) {
+      state.gameData = processEventData(action, state);
       action.payload.events.forEach((event) => {
-        switch (event.name) {
-          case "match_start":
-              // const date_start = new Date(action.payload.timestamp);
-              // const date_string_start = date_start.toISOString().replace('Z', '');
-              // state.gameData.match_start = date_string_start;
-              break;
-      
-          case "match_end":
-              // const date_end = new Date(action.payload.timestamp);
-              // const date_string_end = date_end.toISOString().replace('Z', '');
-              // state.gameData.match_end = date_string_end;
-              break;
-      
-          case "kill":
-              state.gameData.total_kills = parseInt(event.data, 10);
-              console.log(`kill number : ${state.gameData.total_kills}`);
-              break;
-      
-          case "kill_feed":
-              const data = JSON.parse(event.data);
-              if (data.headshot) {
-                  state.gameData.headshot = (state.gameData.headshot || 0) + 1;
-              }
-              if (data.assists) {
-                  state.gameData.assists = (state.gameData.assists || 0) + 1;
-              }
-              console.log(`assists number : ${state.gameData.assists}`);
-              console.log(`headshots number : ${state.gameData.headshot}`);
-              break;
-          }      
         console.log(
           `Event Name: ${event.name}, Data: ${JSON.stringify(event.data)}, Timestamp: ${action.payload.timestamp}`
         );
@@ -126,26 +98,6 @@ const backgroundSlice = createSlice({
     setInfo(state, action: InfoPayload) {
       console.log(`Timestamp: ${action.payload.timestamp}`);
       state.infos.push(action.payload);
-      // if ("info" in action.payload) {
-      //   Object.entries(action.payload.info).forEach((info) => {
-      //     if (info[0] === "kill" && info[1].hasOwnProperty("assists")) {
-      //       console.log("it's an assist",info[1].assists);
-      //     } else if (info[0] === "kill" && info[1].hasOwnProperty("kills")) {
-      //       console.log("it's a kill", info[1].kills);
-      //     } else if (
-      //       info[0] === "kill" &&
-      //       info[1].hasOwnProperty("headshots")
-      //     ) {
-      //       console.log("it's a headshot",info[1].headshots);
-      //     }
-      //   });
-      // }
-
-      // if ("feature" in action.payload) {
-      //   console.log(
-      //     "feature:" + JSON.stringify(action.payload.feature, null, 2)
-      //   );
-      // }
     },
     setRecentlyCompletedChallenges( state, action ) {
       state.recentlyCompletedChallenges = action.payload;
