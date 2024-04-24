@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BackgroundState, EventPayload, InfoPayload, UserInfo } from "types";
 import { gameDataHandlers } from "./helperFunctions";
 
+// TODO:
+
 const initialState: BackgroundState = {
   events: [],
   infos: [],
@@ -83,9 +85,20 @@ const backgroundSlice = createSlice({
           `Event Name: ${event.name}, Data: ${JSON.stringify(event.data)}, Timestamp: ${action.payload.timestamp}`
         );
       });
-      console.log("gameId:", state.gameId);
       
-      state.gameData[state.gameId] = gameDataHandlers[state.gameId](state, action);
+      if (isNaN(state.gameId) || !(state.gameId in gameDataHandlers)) {
+        console.error(`No handler for gameId: ${state.gameId}`);
+        return;
+      }
+    
+      const handler = gameDataHandlers[state.gameId];
+      const updatedGameData = handler(state, action);
+      
+      if (updatedGameData) {
+        state.gameData[state.gameId] = updatedGameData;
+      } else {
+        console.error("Handler did not return updated game data");
+      }
       state.events.push(action.payload);
     },
     setInfo(state, action: InfoPayload) {
