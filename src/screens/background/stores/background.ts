@@ -86,7 +86,9 @@ const backgroundSlice = createSlice({
         );
       });
       
-      if (isNaN(state.gameId) || !(state.gameId in gameDataHandlers)) {
+      state.events.push(action.payload);
+
+      if (isNaN(state.gameId)) {
         console.error(`No handler for gameId: ${state.gameId}`);
         return;
       }
@@ -99,7 +101,6 @@ const backgroundSlice = createSlice({
       } else {
         console.error("Handler did not return updated game data");
       }
-      state.events.push(action.payload);
     },
     setInfo(state, action: InfoPayload) {
       console.log(`Timestamp: ${action.payload.timestamp}`);
@@ -107,7 +108,8 @@ const backgroundSlice = createSlice({
     },
     setRecentlyCompletedChallenges(state, action) {
       state.recentlyCompletedChallenges = action.payload;
-    }, setGameId(state, action:PayloadAction<number>){
+    }, 
+    setGameId(state, action:PayloadAction<number>){
       state.gameId = action.payload;
     }
   },
