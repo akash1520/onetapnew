@@ -2,6 +2,7 @@ import { setGameId } from "screens/background/stores/background";
 
 export const HEARTHSTONE_CLASS_ID = 9898;
 export const VALORANT_CLASS_ID = 21640;
+export const DOTA2_CLASS_ID = 7314;
 
 interface SupportedClassIDs {
   [key: number]: boolean;
@@ -11,6 +12,7 @@ interface SupportedClassIDs {
 export const SUPPORTED_CLASS_IDS : SupportedClassIDs = {
   [HEARTHSTONE_CLASS_ID]: true,
   [VALORANT_CLASS_ID]: true,
+  [DOTA2_CLASS_ID]: true
 };
 
 export function getRunningGame(): Promise<overwolf.games.GetRunningGameInfoResult | null> {

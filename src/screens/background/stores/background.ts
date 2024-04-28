@@ -7,7 +7,7 @@ import { gameDataHandlers } from "./helperFunctions";
 const initialState: BackgroundState = {
   events: [],
   infos: [],
-  gameId: NaN,
+  gameId: 21640,
   gameData: {
     21640: {
       match_start: "2024-04-12T07:07:47.441967",
@@ -25,7 +25,9 @@ const initialState: BackgroundState = {
       agent: "",
       region: "",
       game_mode: ""
-    }
+    },
+    9898:{},
+    7314:{}
   },
   userId: "3",
   recentlyCompletedChallenges: [],

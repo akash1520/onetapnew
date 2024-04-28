@@ -13,28 +13,29 @@ export default function Challenge({
   task,
   completed,
   total,
+  name
 }: {
   task: Record<string, any>;
   completed: number;
   total: number;
+  name:string;
 }) {
   return (
     <li>
       <div className="flex gap-1 items-center">
         <img src="/icons/sword.svg" alt="" />
         {/* Map over task object entries and render non-null values */}
-        {Object.entries(task).map(([key, value]) => {
+        {/* {Object.entries(task).map(([key, value]) => {
           if (value === null || (value !== "" && value !== 0) ) {
-            return (
+            return ( */}
               <p
-                key={key}
                 className="bg-[#4917B2] bg-clip-text text-white"
-              >{`${value} ${toCamelCase(key)} are required! `}</p>
-            );
-          } else {
+              >{`${name}`}</p>
+            {/* ); */}
+          {/* } else {
             return null;
           }
-        })}
+        })} */}
       </div>
       <div className="flex items-center gap-2">
         <Progressbar color="#4917B2" completed={completed} total={total} />

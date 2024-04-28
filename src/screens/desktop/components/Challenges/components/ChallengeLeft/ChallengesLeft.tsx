@@ -50,7 +50,7 @@ export const ChallengesLeft = () => {
         <div className="flex flex-col">
           <ul className="flex flex-col gap-5">
           {challenges.map((challenge) => (
-            <Challenge key={challenge.id} completed={10} total={100} task={challenge.requirements} />
+            <Challenge name={challenge.name} key={challenge.id} completed={10} total={100} task={challenge.requirements} />
           ))}
           </ul>
         </div>

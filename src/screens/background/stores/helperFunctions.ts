@@ -30,6 +30,7 @@ export const gameDataUpdaters = async (userId:string, gameId:number, gameData: g
 
 export const gameDataHandlers : GameDataHandlers = {
     21640: (state:BackgroundState, action:EventPayload) => {
+            console.log("in handlers")
             const gameData = { ...state.gameData[state.gameId] };
             action.payload.events.forEach((event) => {
             switch (event.name) {
@@ -63,6 +64,37 @@ export const gameDataHandlers : GameDataHandlers = {
     return gameData;
     },
     9898: (state:BackgroundState, action:EventPayload) => {
+        const gameData = { ...state.gameData[state.gameId] };
+        action.payload.events.forEach((event) => {
+            switch (event.name) {
+                // case "match_start":
+                //     gameData.match_start = new Date(action.payload.timestamp).toISOString().replace('Z', '');
+                //     console.log("Match start updated:", gameData.match_start);
+                //     break;
+                // case "match_end":
+                //     gameData.match_end = new Date(action.payload.timestamp).toISOString().replace('Z', '');
+                //     console.log("Match end updated:", gameData.match_end);
+                //     break;
+                case "kill":
+                    const data = JSON.parse(event.data);
+
+                    if (data.headshots) {
+                        gameData.total_kills = data.headshots;
+                        gameData.headshot = data.assists;
+                        console.log("Total kills and headshots updated:", gameData.total_kills, gameData.headshot);
+                    } else if (data.assists) {
+                        gameData.total_kills = data.assists;
+                        gameData.assists = data.assists;
+                        console.log("Total kills and assists updated:", gameData.total_kills, gameData.assists);
+                    } else {
+                        gameData.total_kills += parseInt(event.data, 10);
+                        console.log("Total kills incremented by:", parseInt(event.data, 10), "New total:", gameData.total_kills);
+                    }
+                    break;
+            }
+        })
+    },
+    7314: (state:BackgroundState, action:EventPayload) => {
         const gameData = { ...state.gameData[state.gameId] };
         action.payload.events.forEach((event) => {
             switch (event.name) {
