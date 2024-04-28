@@ -25,7 +25,9 @@ const initialState: BackgroundState = {
       agent: "",
       region: "",
       game_mode: ""
-    }
+    },
+    9898:{},
+    7314:{}
   },
   userId: "3",
   recentlyCompletedChallenges: [],
