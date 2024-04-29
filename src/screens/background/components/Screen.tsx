@@ -7,7 +7,7 @@ import {
 import { useGameEventProvider, useWindow } from "overwolf-hooks";
 import { useCallback, useEffect } from "react";
 import { SUPPORTED_CLASS_IDS, getRunningGame } from "lib/games";
-import { setInfo, setEvent } from "../stores/background";
+import { setInfo, setEvent, setGameId } from "../stores/background";
 import store from "app/shared/store";
 import { log } from "lib/log";
 import { checkSession, parseToken } from "lib/auth.utils";
@@ -64,6 +64,7 @@ const BackgroundWindow = () => {
     overwolf.games.onGameInfoUpdated.addListener(async (event) => {
       if (event.runningChanged && event.gameInfo) {
         const isSupportedGame = SUPPORTED_CLASS_IDS[event.gameInfo.classId];
+        setGameId(event.gameInfo.classId);
         if (isSupportedGame) {
           startApp("onGameInfoUpdated");
         }

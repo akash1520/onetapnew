@@ -66,5 +66,5 @@ export interface BackgroundState {
   flag: boolean;
   recentlyCompletedChallenges: Array<ChallengeData>;
   userInfo: UserInfo;
-  userId: string;
+  userId: number;
 }

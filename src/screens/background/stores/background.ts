@@ -7,29 +7,29 @@ import { gameDataHandlers } from "./helperFunctions";
 const initialState: BackgroundState = {
   events: [],
   infos: [],
-  gameId: 21640,
+  gameId: NaN,
   gameData: {
     21640: {
-      match_start: "2024-04-12T07:07:47.441967",
-      match_end: "2024-04-12T07:07:47.441967",
-      match_status: "false",
-      total_kills: 1,
-      deaths: 1,
+      match_start: "2024-03-31T19:08:38.679Z",
+      match_end: "2024-04-8T18:30:00.000Z",
+      total_kills: 0,
+      deaths: 0,
       assists: 0,
       headshot: 0,
       spikes_defuse: 0,
       spikes_planted: 0,
-      damage_taken: 0,
       damage_done: 0,
       team_scores: 0,
       agent: "",
       region: "",
-      game_mode: ""
+      game_mode: "",
+      damage_taken: 0,
+      match_status: "false",
     },
-    9898:{},
-    7314:{}
+    9898: {},
+    7314: {},
   },
-  userId: "3",
+  userId: 3,
   recentlyCompletedChallenges: [],
   userInfo: {
     id: 0,
@@ -47,7 +47,7 @@ const initialState: BackgroundState = {
 };
 
 export const setUserId = createAsyncThunk<
-  string,
+  number,
   string,
   { state: BackgroundState; rejectValue: string }
 >("backgroundScreen/setUserId", async (authId, { rejectWithValue }) => {
@@ -87,21 +87,21 @@ const backgroundSlice = createSlice({
           `Event Name: ${event.name}, Data: ${JSON.stringify(event.data)}, Timestamp: ${action.payload.timestamp}`
         );
       });
-      
+
       state.events.push(action.payload);
 
       if (isNaN(state.gameId)) {
         console.error(`No handler for gameId: ${state.gameId}`);
         return;
-      }
-    
-      const handler = gameDataHandlers[state.gameId];
-      const updatedGameData = handler(state, action);
-      
-      if (updatedGameData) {
-        state.gameData[state.gameId] = updatedGameData;
       } else {
-        console.error("Handler did not return updated game data");
+        const handler = gameDataHandlers[state.gameId];
+        const updatedGameData = handler(state, action);
+
+        if (updatedGameData) {
+          state.gameData[state.gameId] = updatedGameData;
+        } else {
+          console.error("Handler did not return updated game data");
+        }
       }
     },
     setInfo(state, action: InfoPayload) {
@@ -110,10 +110,13 @@ const backgroundSlice = createSlice({
     },
     setRecentlyCompletedChallenges(state, action) {
       state.recentlyCompletedChallenges = action.payload;
-    }, 
-    setGameId(state, action:PayloadAction<number>){
-      state.gameId = action.payload;
-    }
+    },
+    setGameId(state, action: PayloadAction<number>) {
+      if (isNaN(state.gameId)) {
+        state.gameId = action.payload;
+        console.log("game id set successfully", state.gameId);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -134,6 +137,7 @@ const backgroundSlice = createSlice({
   },
 });
 
-export const { setEvent, setInfo, setRecentlyCompletedChallenges, setGameId } = backgroundSlice.actions;
+export const { setEvent, setInfo, setRecentlyCompletedChallenges, setGameId } =
+  backgroundSlice.actions;
 
 export default backgroundSlice.reducer;

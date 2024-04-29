@@ -1,32 +1,46 @@
-import { BackgroundState, EventPayload, gameData } from "types";
-import { setRecentlyCompletedChallenges } from "./background";
+import { BackgroundState, EventPayload } from "types";
+import { setGameId, setRecentlyCompletedChallenges } from "./background";
 import { extractCompletedChallenges } from "utils";
+import { HEARTHSTONE_CLASS_ID, VALORANT_CLASS_ID } from "lib/games";
 interface GameDataHandlers {
     [key: number]: (state: BackgroundState, action: EventPayload) => { [x: string]: any } | void;
 }
 
-export const gameDataUpdaters = async (userId:string, gameId:number, gameData: gameData) => {
-        fetch("http://localhost:3000/challenges/update-completed-challenges", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, gameId, gameData }),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            const completedChallenges = extractCompletedChallenges(data);
-            setRecentlyCompletedChallenges(completedChallenges);
-        })
-        .catch(error => {
-            console.error("There was an error posting the data:", JSON.stringify(error));
-        });
+const gameIdMap : {
+    [key:number]:number
+} = {
+    [VALORANT_CLASS_ID] : 2,
+    [HEARTHSTONE_CLASS_ID] : NaN, 
 }
+
+export const gameDataUpdaters = async (userId: number, gameId: number, gameData: any) => {
+    console.error("in game data updaters", JSON.stringify({ userId, gameId, gameData }));
+    try {
+        const response = await fetch("http://localhost:3000/challenges/update-completed-challenges", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, gameId, gameData }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error: Status ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("The game data was updated successfully", JSON.stringify(data));
+        const completedChallenges = extractCompletedChallenges(data);
+        setRecentlyCompletedChallenges(completedChallenges);
+
+    } catch (error) {
+        console.error("Failed to update game data", JSON.stringify({ userId, gameId, gameData }));
+        console.error("Error details:", error?.toString());  // Changed to use error.toString() for better error details
+        // Consider rethrowing the error if you want it to be handled further up the call stack
+        // throw error;
+    }
+}
+
 
 export const gameDataHandlers : GameDataHandlers = {
     21640: (state:BackgroundState, action:EventPayload) => {
@@ -39,7 +53,8 @@ export const gameDataHandlers : GameDataHandlers = {
                     console.log("Match start updated:", gameData.match_start);
                     break;
                 case "match_end":
-                    gameDataUpdaters(state.userId, state.gameId, state.gameData[state.gameId])
+                    const gameId = gameIdMap[state.gameId];
+                    gameDataUpdaters(state.userId, gameId, state.gameData[state.gameId])
                     // gameData.match_end = new Date(action.payload.timestamp).toISOString().replace('Z', '');
                     console.log("Match end updated:", gameData.match_end);
                     break;
