@@ -89,7 +89,7 @@ export default function ChallengesCompleted({className}:{className?: string}) {
 
   return (
     <div className="col-start-1 flex gap-8 my-5 flex-col col-end-3">
-        {challenges.forEach((challenge:any) => {
+        {challenges && challenges.forEach((challenge:any) => {
             return <ChallengeCompletedCard challengeId={challenge.challengeId}/>
         })
         }
