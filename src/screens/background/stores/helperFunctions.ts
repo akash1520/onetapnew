@@ -1,7 +1,8 @@
 import { BackgroundState, EventPayload } from "types";
-import { setGameId, setRecentlyCompletedChallenges } from "./background";
+import { setRecentlyCompletedChallenges } from "./background";
 import { extractCompletedChallenges } from "utils";
 import { HEARTHSTONE_CLASS_ID, VALORANT_CLASS_ID } from "lib/games";
+import store from "app/shared/store";
 interface GameDataHandlers {
     [key: number]: (state: BackgroundState, action: EventPayload) => { [x: string]: any } | void;
 }
@@ -31,13 +32,10 @@ export const gameDataUpdaters = async (userId: number, gameId: number, gameData:
         const data = await response.json();
         console.log("The game data was updated successfully", JSON.stringify(data));
         const completedChallenges = extractCompletedChallenges(data);
-        setRecentlyCompletedChallenges(completedChallenges);
-
+        store.dispatch(setRecentlyCompletedChallenges(completedChallenges));
     } catch (error) {
         console.error("Failed to update game data", JSON.stringify({ userId, gameId, gameData }));
-        console.error("Error details:", error?.toString());  // Changed to use error.toString() for better error details
-        // Consider rethrowing the error if you want it to be handled further up the call stack
-        // throw error;
+        console.error("Error details:", error?.toString());
     }
 }
 

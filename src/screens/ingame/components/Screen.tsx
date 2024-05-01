@@ -1,26 +1,27 @@
 import { RootReducer } from "app/shared/rootReducer";
 import { Feed } from "components/Feed";
 import { Title } from "components/Title/Title";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "./styles/Screen.css";
 import {Notifications} from "./Notification";
 import { useEffect, useState } from "react";
 
 const Screen = () => {
   const [completedChallenges, setCompletedChallenges] = useState<any>();
-  const dispatch = useDispatch();
   const { events, infos, recentlyCompletedChallenges } = useSelector(
     (state: RootReducer) => state.background
   );
 
+  console.log("Completed", JSON.stringify(completedChallenges));
+
 
   useEffect(() => {
     setCompletedChallenges(recentlyCompletedChallenges);
-  }, [recentlyCompletedChallenges, dispatch]);
+  }, [recentlyCompletedChallenges]);
 
   return (
     <div className="ingame">
-      {recentlyCompletedChallenges.length && <Notifications completedChallenges={completedChallenges} />}
+      {completedChallenges?.length && <Notifications completedChallenges={completedChallenges} />}
       <Title color="white">InGame Screen</Title>
       <Feed
         title="Events"

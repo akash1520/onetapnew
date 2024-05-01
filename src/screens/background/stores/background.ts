@@ -7,7 +7,7 @@ import { gameDataHandlers } from "./helperFunctions";
 const initialState: BackgroundState = {
   events: [],
   infos: [],
-  gameId: NaN,
+  gameId: 21640,
   gameData: {
     21640: {
       match_start: "2024-03-31T19:08:38.679Z",
@@ -109,12 +109,17 @@ const backgroundSlice = createSlice({
       state.infos.push(action.payload);
     },
     setRecentlyCompletedChallenges(state, action) {
+      console.log(`RecentlyCompletedChallenges`, JSON.stringify(action.payload));
       state.recentlyCompletedChallenges = action.payload;
+      console.log(`RecentlyCompletedChallenges`, JSON.stringify(state.recentlyCompletedChallenges));
+
     },
     setGameId(state, action: PayloadAction<number>) {
       if (isNaN(state.gameId)) {
         state.gameId = action.payload;
         console.log("game id set successfully", state.gameId);
+      } else {
+        console.log("game id is already set", state.gameId);
       }
     },
   },

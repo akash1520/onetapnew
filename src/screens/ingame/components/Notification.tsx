@@ -1,16 +1,32 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setRecentlyCompletedChallenges } from 'screens/background/stores/background';
 
-function Notifications({completedChallenges}:{completedChallenges:any}){
-  return(
+
+function Notifications({ completedChallenges }: { completedChallenges: any }) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log("This runs 5 seconds after Notifications component renders");
+      dispatch(setRecentlyCompletedChallenges([]));
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [dispatch]); // Empty dependency array means this effect runs once after the initial render
+
+  return (
     <>
-    {completedChallenges.length && completedChallenges.map((completedChallenge:any)=>{
-      console.log("we reached this far");
-      
-      return <Notification completedChallenge={completedChallenge} />
-    })}
+      {completedChallenges.length > 0 && completedChallenges.map((completedChallenge: any) => {
+        console.log("we reached this far");
+
+        return <Notification key={completedChallenge.id} completedChallenge={completedChallenge} />
+      })}
     </>
   )
 }
+
+export default Notifications;
+
 
 function Notification({ progress = 100, completedChallenge }:{progress?:number, completedChallenge:any}) {
   const [show, setShow] = useState(false);
@@ -24,7 +40,7 @@ function Notification({ progress = 100, completedChallenge }:{progress?:number, 
   }, [show]);
 
   // Calculate the stroke dash offset for circular progress
-  const radius = 30;
+  const radius = 45;
   const circumference = radius * 2 * Math.PI;
   const offset = circumference - (progress / 100) * circumference;
 

@@ -64,7 +64,7 @@ export interface BackgroundState {
   gameId: number;
   gameData: { [gameId: number]: any };
   flag: boolean;
-  recentlyCompletedChallenges: Array<ChallengeData>;
+  recentlyCompletedChallenges: {[key:string]:any};
   userInfo: UserInfo;
   userId: number;
 }
