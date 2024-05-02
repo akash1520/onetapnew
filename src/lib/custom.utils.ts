@@ -51,32 +51,42 @@ const stringStrategy: TypeStrategy = {
 
 const strategies: TypeStrategy[] = [numberStrategy, booleanStrategy, stringStrategy];
 
-function aggregateAllProperties(items: Item[]): FinalResults {
-    const results: Results = {};
-
-    items.forEach(item => {
-        Object.keys(item).forEach(key => {
-            const value = item[key];
-            if (!(key in results)) {
-                results[key] = { aggregate: 0, anyTrue: false, firstString: null };
-            }
-            const strategy = strategies.find(s => s.isApplicable(value));
-            strategy?.execute(key, value, results);
-        });
+interface ChallengeData {
+    id: number;
+    requirements: Record<string, any>;  // Change the type to `any` to allow mixed types
+    startTime: string;
+    endTime: string;
+    type: string;
+    name: string;
+    Game: {
+      gameName: string;
+    };
+  }
+  
+  function aggregateRequirements(challengeDataArray: ChallengeData[]): {[key:string]:string|boolean|number} {
+    const aggregatedRequirements: Record<string, any> = {};
+  
+    challengeDataArray.forEach(challengeData => {
+      Object.entries(challengeData.requirements).forEach(([key, value]) => {
+        // Assuming type based on key - need to adjust according to actual data structure
+        if (typeof value === 'number') {
+          if (!aggregatedRequirements[key]) {
+            aggregatedRequirements[key] = 0;
+          }
+          aggregatedRequirements[key] += value;
+        } else if (typeof value === 'boolean') {
+          if (!aggregatedRequirements[key]) {
+            aggregatedRequirements[key] = false;
+          }
+          aggregatedRequirements[key] = aggregatedRequirements[key] || value;
+        } else if (typeof value === 'string') {
+          if (!aggregatedRequirements[key]) {
+            aggregatedRequirements[key] = value;
+          }
+        }
+      });
     });
-
-    return Object.entries(results).reduce((acc, [key, data]) => {
-        acc[key] = data.firstString ?? data.anyTrue ?? (data.aggregate !== 0 ? data.aggregate : null);
-        return acc;
-    }, {} as FinalResults);
-}
-
-const data: Item[] = [
-    { value: 10, active: false, description: "First item", type: 'A' },
-    { value: 20, active: true, description: "Second item", type: 'B' },
-    { value: 30, active: false, type: 'A' },
-    { value: 5, newProp: true }
-];
-
-const results = aggregateAllProperties(data);
-console.log(results)
+  
+    return aggregatedRequirements;
+  }
+  

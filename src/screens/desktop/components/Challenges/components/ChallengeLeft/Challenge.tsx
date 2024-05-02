@@ -10,32 +10,23 @@ function toCamelCase(str:string) {
 
 // Adjust the type definition to expect task as an object
 export default function Challenge({
-  task,
   completed,
   total,
-  name
+  name,
+  requirement
 }: {
-  task: Record<string, any>;
   completed: number;
   total: number;
   name:string;
+  requirement: string | number | boolean;
 }) {
   return (
     <li>
       <div className="flex gap-1 items-center">
         <img src="/icons/sword.svg" alt="" />
-        {/* Map over task object entries and render non-null values */}
-        {/* {Object.entries(task).map(([key, value]) => {
-          if (value === null || (value !== "" && value !== 0) ) {
-            return ( */}
               <p
                 className="bg-[#4917B2] bg-clip-text text-white"
-              >{`${name}`}</p>
-            {/* ); */}
-          {/* } else {
-            return null;
-          }
-        })} */}
+              >{`We require ${name} to be ${requirement}`}</p>
       </div>
       <div className="flex items-center gap-2">
         <Progressbar color="#4917B2" completed={completed} total={total} />

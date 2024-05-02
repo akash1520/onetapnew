@@ -16,11 +16,14 @@ interface ChallengeData {
   };
 }
 
+interface Requirements {
+  [key:string] : number | string | boolean;
+}
 
 export const ChallengesLeft = () => {
 
   const {gameId} = useFilterContext()
-  const [challenges, setChallenges] = useState<ChallengeData[]>([]);
+  const [challenges, setChallenges] = useState<Requirements>();
 
   useEffect(() => {
     // Use a proper URL and handle potential errors
@@ -32,7 +35,7 @@ export const ChallengesLeft = () => {
         return res.json();
       })
       .then((res) => {
-        setChallenges(res);
+        // setChallenges(aggregateRequirements(res));
       })
       .catch((error) => {
         console.error("Failed to fetch challenges:", error);
@@ -49,9 +52,11 @@ export const ChallengesLeft = () => {
         <h1 className="font-Impact py-2">Challenges</h1>
         <div className="flex flex-col">
           <ul className="flex flex-col gap-5">
-          {challenges.map((challenge) => (
-            <Challenge name={challenge.name} key={challenge.id} completed={10} total={100} task={challenge.requirements} />
-          ))}
+            {
+              challenges && Object.keys(challenges).map((key, index)=>{
+                return <Challenge total={40} completed={30} name={key} requirement={challenges[key]} key={index}/>
+              })
+            }
           </ul>
         </div>
       </div>
