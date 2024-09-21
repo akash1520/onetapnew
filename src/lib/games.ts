@@ -6,11 +6,10 @@ interface SupportedClassIDs {
   [key: number]: boolean;
 }
 
-
-export const SUPPORTED_CLASS_IDS : SupportedClassIDs = {
+export const SUPPORTED_CLASS_IDS: SupportedClassIDs = {
   [HEARTHSTONE_CLASS_ID]: true,
   [VALORANT_CLASS_ID]: true,
-  [DOTA2_CLASS_ID]: true
+  [DOTA2_CLASS_ID]: true,
 };
 
 export function getRunningGame(): Promise<overwolf.games.GetRunningGameInfoResult | null> {
@@ -18,20 +17,22 @@ export function getRunningGame(): Promise<overwolf.games.GetRunningGameInfoResul
     overwolf.games.getRunningGameInfo((result) => {
       if (result && SUPPORTED_CLASS_IDS[result.classId]) {
         resolve(result);
+        console.log("recognised game was running", result);
       } else {
-        resolve(null);
+        console.log("unrecognised game was running", result);
       }
     });
   });
 }
 
-
 export function getGameInfo(): Promise<any> {
   return new Promise((resolve, reject) => {
     overwolf.games.events.getInfo((info) => {
       if (info.success) {
+        console.log("recognised game event", info);
         resolve(info.res);
       } else {
+        console.error("Failed to get game info:", info);
         reject(info);
       }
     });

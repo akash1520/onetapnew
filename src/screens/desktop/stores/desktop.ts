@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { overwolfHttpRequest } from "utils/overwolfHttpRequest";
 
 type OnboardedPayload = PayloadAction<boolean>;
 type InventoryOpenPayload = PayloadAction<number>;
@@ -34,20 +35,18 @@ export const fetchLeaderboardData = createAsyncThunk<
   Array<LeaderboardDataPayload>, // Expected return type of the fulfilled action
   string, // Argument type for the payload creator
   { rejectValue: string } // Optional, if you want to handle rejected cases with a specific type
->(
-  'desktopScreen/fetchLeaderboardData',
-  async (gameId, { rejectWithValue }) => {
-    try {
-      const response = await fetch(
-        `https://localhost:3000/leaderboard/game-specific/${gameId}`
-      );
-      if (!response.ok) throw new Error('Network response was not ok');
-      return (await response.json()) as Array<LeaderboardDataPayload>;
-    } catch (error) {
-      return rejectWithValue('Failed to fetch leaderboard data');
-    }
+>("desktopScreen/fetchLeaderboardData", async (gameId, { rejectWithValue }) => {
+  try {
+    const data = await overwolfHttpRequest(
+      `https://localhost:3000/leaderboard/game-specific/${gameId}`,
+      "GET"
+    );
+
+    return data as Array<LeaderboardDataPayload>;
+  } catch (error) {
+    return rejectWithValue("Failed to fetch leaderboard data");
   }
-);
+});
 
 const desktopSlice = createSlice({
   name: "desktopScreen",
@@ -71,7 +70,7 @@ const desktopSlice = createSlice({
       })
       .addCase(fetchLeaderboardData.rejected, (state, action) => {
         state.loading = false;
-        console.error(action.payload || 'Failed to load leaderboard data');
+        console.error(action.payload || "Failed to load leaderboard data");
       });
   },
 });

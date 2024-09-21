@@ -13,6 +13,7 @@
     "description": "It's an app to make your gaming experience better."
   },
   "permissions": [
+    "Web",
     "Extensions",
     "Streaming",
     "Profile",
@@ -79,7 +80,7 @@
         "in_game_only": true,
         "focus_game_takeover": "ReleaseOnHidden",
         "block_top_window_navigation": true,
-        "transparent": true,
+        "transparent": false,
         "resizable": true,
         "size": {
           "width": 350,

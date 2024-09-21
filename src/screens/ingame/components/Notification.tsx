@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setRecentlyCompletedChallenges } from 'screens/background/stores/background';
-
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setRecentlyCompletedChallenges } from "screens/background/stores/background";
 
 function Notifications({ completedChallenges }: { completedChallenges: any }) {
   const dispatch = useDispatch();
   useEffect(() => {
     const timer = setTimeout(() => {
       console.log("This runs 5 seconds after Notifications component renders");
-      dispatch(setRecentlyCompletedChallenges([]));
+      dispatch(setRecentlyCompletedChallenges({}));
     }, 5000);
 
     return () => clearTimeout(timer);
@@ -16,19 +15,30 @@ function Notifications({ completedChallenges }: { completedChallenges: any }) {
 
   return (
     <>
-      {completedChallenges.length > 0 && completedChallenges.map((completedChallenge: any) => {
-        console.log("we reached this far");
+      {completedChallenges.length > 0 &&
+        completedChallenges.map((completedChallenge: any) => {
+          console.log("we reached this far");
 
-        return <Notification key={completedChallenge.id} completedChallenge={completedChallenge} />
-      })}
+          return (
+            <Notification
+              key={completedChallenge.id}
+              completedChallenge={completedChallenge}
+            />
+          );
+        })}
     </>
-  )
+  );
 }
 
 export default Notifications;
 
-
-function Notification({ progress = 100, completedChallenge }:{progress?:number, completedChallenge:any}) {
+function Notification({
+  progress = 100,
+  completedChallenge,
+}: {
+  progress?: number;
+  completedChallenge: any;
+}) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -45,9 +55,16 @@ function Notification({ progress = 100, completedChallenge }:{progress?:number, 
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className={`${show ? 'flex' : 'hidden'} fixed right-5 bottom-5 bg-white shadow-md rounded-lg overflow-hidden`}>
+    <div
+      className={`${show ? "flex" : "hidden"} fixed right-5 bottom-5 bg-white shadow-md rounded-lg overflow-hidden`}
+    >
       <div className="flex items-center p-5">
-        <svg className="transform -rotate-90" width="50" height="50" viewBox="0 0 120 120">
+        <svg
+          className="transform -rotate-90"
+          width="50"
+          height="50"
+          viewBox="0 0 120 120"
+        >
           <circle
             className="transition-all"
             stroke="green"
@@ -60,11 +77,11 @@ function Notification({ progress = 100, completedChallenge }:{progress?:number, 
             strokeDashoffset={offset}
           />
           <text
-            x="50%" 
-            y="50%" 
-            dy=".3em" 
-            textAnchor="middle" 
-            fill="green" 
+            x="50%"
+            y="50%"
+            dy=".3em"
+            textAnchor="middle"
+            fill="green"
             fontSize="30"
             transform="rotate(90 60 60)"
           >
@@ -80,4 +97,4 @@ function Notification({ progress = 100, completedChallenge }:{progress?:number, 
   );
 }
 
-export {Notification, Notifications};
+export { Notification, Notifications };

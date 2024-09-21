@@ -9,24 +9,29 @@ import { SVGComponent } from "../../screens/desktop/components/DesktopHeaderSVG"
 import "./Titlebar.css";
 
 type HeaderProps = {
-  WINDOW_NAME:string
-  className?:string
-}
+  WINDOW_NAME: string;
+  className?: string;
+};
 
 const { BACKGROUND } = WINDOW_NAMES;
 
 const handleDiscordClick = () => {
-  if (isDev) return window.open("https://discord.com/channels/1150063823311618058/1196157523921731625");
-  overwolf.utils.openUrlInDefaultBrowser("https://discord.com/channels/1150063823311618058/1196157523921731625");
+  if (isDev)
+    return window.open(
+      "https://discord.com/channels/1150063823311618058/1196157523921731625"
+    );
+  overwolf.utils.openUrlInDefaultBrowser(
+    "https://discord.com/channels/1150063823311618058/1196157523921731625"
+  );
 };
 
-export const Titlebar = ({WINDOW_NAME, className}:HeaderProps) => {
+export const Titlebar = ({ WINDOW_NAME, className }: HeaderProps) => {
   const [maximized, setMaximize] = useState(false);
   const [currentWindow] = useWindow(WINDOW_NAME, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const [backgroundWindow] = useWindow(BACKGROUND, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const { onDragStart, onMouseMove, setCurrentWindowID } = useDrag(
     null,
-    DISPLAY_OVERWOLF_HOOKS_LOGS,
+    DISPLAY_OVERWOLF_HOOKS_LOGS
   );
 
   const toggleIcon = useCallback(() => {
@@ -49,8 +54,7 @@ export const Titlebar = ({WINDOW_NAME, className}:HeaderProps) => {
       onMouseMove={onMouseMove}
     >
       <SVGComponent />
-      <div className={"header__title"} >
-      </div>
+      <div className={"header__title"}></div>
       <div className={"header__controls__group"}>
         <button
           className={classNames("header__icon header__control header__discord")}
@@ -84,7 +88,7 @@ export const Titlebar = ({WINDOW_NAME, className}:HeaderProps) => {
         <button
           className={classNames(
             "header__icon header__control header__toggle__icons",
-            maximized ? "" : "header__toggled",
+            maximized ? "" : "header__toggled"
           )}
           onClick={toggleIcon}
         >
@@ -97,9 +101,9 @@ export const Titlebar = ({WINDOW_NAME, className}:HeaderProps) => {
         </button>
         <button
           className="header__icon header__control header__control__close"
-          onClick={()=>{
-            backgroundWindow?.close()
-            currentWindow.close()
+          onClick={() => {
+            backgroundWindow?.minimize()();
+            currentWindow.minimize()();
           }}
         >
           <svg>

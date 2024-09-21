@@ -6,7 +6,7 @@ import {
   loginEP,
   UseloginProvider,
   signUp,
-  forgotPassword
+  forgotPassword,
 } from "lib/auth.utils";
 import { useWindow } from "overwolf-hooks";
 import {
@@ -61,11 +61,9 @@ const handleSubmit = async (
   if (error) ConsoleAuthError(error);
   else {
     desktop.restore();
-    login.close();
+    login.minimize()();
   }
 };
-
-
 
 const AuthForm = () => {
   const [isSignup, setIsSignup] = useState(false);
@@ -161,7 +159,7 @@ const AuthForm = () => {
           <div className="flex items-end justify-between mt-4">
             <button
               type="button"
-              onClick={()=>forgotPassword(values.email)}
+              onClick={() => forgotPassword(values.email)}
               className="px-4 py-2.5 border-none rounded hover:underline text-white hover:text-blue-300"
             >
               Reset Password!

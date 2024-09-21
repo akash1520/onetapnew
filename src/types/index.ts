@@ -61,10 +61,11 @@ export type EventPayload = PayloadAction<Timestamp & OwEvent>;
 export interface BackgroundState {
   events: Array<Timestamp & OwEvent>;
   infos: Array<Timestamp & OwInfo>;
+  player_name: string;
   gameId: number;
   gameData: { [gameId: number]: any };
   flag: boolean;
-  recentlyCompletedChallenges: {[key:string]:any};
+  recentlyCompletedChallenges: { [key: string]: any };
   userInfo: UserInfo;
-  userId: number;
+  userId: string;
 }

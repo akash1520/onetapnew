@@ -1,4 +1,4 @@
-import {  AuthError, Provider } from "@supabase/supabase-js";
+import { AuthError, Provider } from "@supabase/supabase-js";
 import { supabase } from "app";
 import {
   DISPLAY_OVERWOLF_HOOKS_LOGS,
@@ -32,16 +32,16 @@ async function logOut() {
   await supabase.auth.signOut();
 }
 
-
 async function signUp(
   email: string,
   password: string
 ): Promise<AuthError | undefined> {
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: email,
     password: password,
   });
   if (error) {
+    console.log(data, error)
     return error;
   }
 }
@@ -55,10 +55,12 @@ async function loginEP(
     return;
   } else {
     if (email && password) {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       });
+
+      console.log("Logged in user", data);
 
       if (error) {
         return error;
@@ -124,20 +126,20 @@ const UseloginProvider = (provider: Provider) => {
     });
     if (error) ConsoleAuthError(error);
     else {
-      login.close();
+      login.minimize()();
     }
   };
   return retFunction;
 };
 
-async function forgotPassword(email:string):Promise<Error|undefined> {
-    const { error} = await supabase.auth.resetPasswordForEmail(email) 
-    console.info(`this is the ${error?.message}` );
-    
-    if(error) {
-      ConsoleAuthError(error);
-      return error;
-    }
+async function forgotPassword(email: string): Promise<Error | undefined> {
+  const { error } = await supabase.auth.resetPasswordForEmail(email);
+  console.info(`this is the ${error?.message}`);
+
+  if (error) {
+    ConsoleAuthError(error);
+    return error;
+  }
 }
 
 export {

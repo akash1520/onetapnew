@@ -7,6 +7,7 @@ import LeaderboardBanner from "./LeaderboardBanner";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLeaderboardData } from "screens/desktop/stores/desktop";
 import { AppDispatch } from "app/shared/store";
+import { overwolfHttpRequest } from "utils/overwolfHttpRequest";
 
 interface GameData {
   rank: number;
@@ -37,8 +38,7 @@ const ScoreBox = ({
 };
 
 const YourScoreBox = () => {
-
-  const {userInfo} = useSelector((state:any)=>state.background)
+  const { userInfo } = useSelector((state: any) => state.background);
 
   return (
     <div className="border-onetapViolet bg-[#222222] border-[1px] relative flex flex-col pt-16 items-center grow mr-4">
@@ -104,30 +104,29 @@ const Record = ({
 
 export default function Leaderboard({ className }: { className: string }) {
   const { gameId } = useFilterContext();
-  const [gameData, setGameData] = useState<GameData[]|null>();
-  const dispatch =  useDispatch<AppDispatch>()
+  const [gameData, setGameData] = useState<GameData[] | null>();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        dispatch(fetchLeaderboardData(gameId));
+        try {
+          const jsonData = await overwolfHttpRequest(
+            `http://localhost:3000/leaderboard/game-specific/${gameId}`,
+            "GET"
+          );
 
-        dispatch(fetchLeaderboardData(gameId))
-
-        const gameData = await fetch(
-          `http://localhost:3000/leaderboard/game-specific/${gameId}`
-        );
-
-        if (!gameData.ok) {
-          throw new Error("Failed to fetch data");
+          setGameData(jsonData);
+          console.log(jsonData);
+        } catch (error) {
+          console.error("Failed to fetch data:", error);
         }
-        const jsonData = await gameData.json();
-        setGameData(jsonData);
-        console.log(jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setTimeout(()=>{
-          fetchData()
-        },5000)
+        setTimeout(() => {
+          fetchData();
+        }, 5000);
       }
     };
 
@@ -145,20 +144,17 @@ export default function Leaderboard({ className }: { className: string }) {
           <div className="rounded-lg w-full">
             <h1 className="text-2xl font-Impact">Ranking</h1>
             <div className="flex mt-4 py-8 flex-col bg-gradient-to-t gap-4  border-onetapViolet">
-              {
-                gameData && gameData.map(
-                  (game:GameData) => (
-                    <Record
-                      key={game.id}
-                      level={game.gameLevel}
-                      isFirst={game.rank===1}
-                      rank={game.rank}
-                      name={game.User.userName}
-                      coins={game.gameBalance}
-                    />
-                  )
-                )
-              }
+              {gameData &&
+                gameData.map((game: GameData) => (
+                  <Record
+                    key={game.id}
+                    level={game.gameLevel}
+                    isFirst={game.rank === 1}
+                    rank={game.rank}
+                    name={game.User.userName}
+                    coins={game.gameBalance}
+                  />
+                ))}
             </div>
           </div>
           <Filter className="w-[48dvw]">

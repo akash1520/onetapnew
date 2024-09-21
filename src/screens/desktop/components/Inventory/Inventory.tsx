@@ -1,7 +1,8 @@
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setInventoryOpen } from "screens/desktop/stores/desktop";
 import { CoinsEarned, CoinsSpend, Data } from "./types";
+import { overwolfHttpRequest } from "utils/overwolfHttpRequest";
 
 type InventoryProps = {
   className?: string;
@@ -10,11 +11,11 @@ type InventoryProps = {
 export const EarntItem = ({
   game_name,
   amount,
-  src_img
+  src_img,
 }: {
   game_name: string;
   amount: number;
-  src_img:string;
+  src_img: string;
 }) => {
   return (
     <div className="flex justify-between w-full px-5 py-3">
@@ -31,78 +32,116 @@ export const EarntItem = ({
   );
 };
 
-export const SpentItem =({game_name, price="100", amount_currency, className}:{game_name?:string, price?:string, amount_currency?:string, className?:string})=>{
-    return (
-        <div className={`${className} h-48 bg-black rounded`}>
-            <img className="rounded" src="/banners/pubg.png" alt="pubg"/>
-            <div className="py-2">
-                <div className="mx-3">
-                    <h2 className="font-Impact">{game_name} {amount_currency}</h2>
-                    <div className="flex items-center gap-2">
-                        <img className="h-4" src="/icons/coin.svg" alt="coin"/>
-                        <p>{price}</p>
-                    </div>
-                </div>
-            </div>
-    </div>
-    )
-}
-
-export const EarntSection = ({ inventoryOpen, data }: { inventoryOpen: number, data?:CoinsEarned[] }) => {
+export const SpentItem = ({
+  game_name,
+  price = "100",
+  amount_currency,
+  className,
+}: {
+  game_name?: string;
+  price?: string;
+  amount_currency?: string;
+  className?: string;
+}) => {
   return (
-    <div className={`${inventoryOpen !== 3 ? "flex flex-col" : "hidden"}`}>
-      <div className="flex flex-col w-full overflow-y-scroll scrollbar">
-        {
-            data && data.map((item)=>{
-                return <EarntItem src_img={item.Game.gameImage as string} game_name={item.Game.gameName} key={item.id} amount={item.gameBalance} />
-            })
-        }
-      </div>
-      <div>
-        <p className="font-Impact">Get More Coins</p>
-        <div className="flex flex-row overflow-scroll-x">
-            
+    <div className={`${className} h-48 bg-black rounded`}>
+      <img className="rounded" src="/banners/pubg.png" alt="pubg" />
+      <div className="py-2">
+        <div className="mx-3">
+          <h2 className="font-Impact">
+            {game_name} {amount_currency}
+          </h2>
+          <div className="flex items-center gap-2">
+            <img className="h-4" src="/icons/coin.svg" alt="coin" />
+            <p>{price}</p>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export const SpentSection = ({ inventoryOpen, data }: { inventoryOpen: number, data?:CoinsSpend[] }) => {
-    return (
-      <div className={`${inventoryOpen === 3 ? "flex" : "hidden"}`}>
-        <div className="flex flex-row px-1 h-[47dvh] gap-2 flex-wrap overflow-y-scroll scrollbar">
-            {
-                data && data.map((item)=>{
-                    return <SpentItem price={item.coinsSpend.toString()} game_name={item.Game.gameName} amount_currency={item.coinsSpend.toString()} className="w-44"/>
-                }
-                )
-            }
-        </div>
+export const EarntSection = ({
+  inventoryOpen,
+  data,
+}: {
+  inventoryOpen: number;
+  data?: CoinsEarned[];
+}) => {
+  return (
+    <div className={`${inventoryOpen !== 3 ? "flex flex-col" : "hidden"}`}>
+      <div className="flex flex-col w-full overflow-y-scroll scrollbar">
+        {data &&
+          data.map((item) => {
+            return (
+              <EarntItem
+                src_img={item.Game.gameImage as string}
+                game_name={item.Game.gameName}
+                key={item.id}
+                amount={item.gameBalance}
+              />
+            );
+          })}
       </div>
-    );
-  };
+      <div>
+        <p className="font-Impact">Get More Coins</p>
+        <div className="flex flex-row overflow-scroll-x"></div>
+      </div>
+    </div>
+  );
+};
+
+export const SpentSection = ({
+  inventoryOpen,
+  data,
+}: {
+  inventoryOpen: number;
+  data?: CoinsSpend[];
+}) => {
+  return (
+    <div className={`${inventoryOpen === 3 ? "flex" : "hidden"}`}>
+      <div className="flex flex-row px-1 h-[47dvh] gap-2 flex-wrap overflow-y-scroll scrollbar">
+        {data &&
+          data.map((item) => {
+            return (
+              <SpentItem
+                price={item.coinsSpend.toString()}
+                game_name={item.Game.gameName}
+                amount_currency={item.coinsSpend.toString()}
+                className="w-44"
+              />
+            );
+          })}
+      </div>
+    </div>
+  );
+};
 
 export default function Inventory({ className }: InventoryProps) {
   const [data, setData] = useState<Data>();
   const dispatch = useDispatch();
   const { inventoryOpen } = useSelector((state: any) => state.desktop);
-
+  const { userId } = useSelector((state: any) => state.background);
   const handleClick = (num: number) => {
     dispatch(setInventoryOpen(num));
   };
 
   console.log(data?.coinsEarned);
-  
 
   useEffect(() => {
-
     async function getData() {
-        const res = await fetch("http://localhost:3000/inventory/get-all-user-info/3");
-        if (res.ok) setData(await res.json());
+      try {
+        const data = await overwolfHttpRequest(
+          `http://localhost:3000/inventory/get-all-user-info/${userId}`,
+          "GET"
+        );
+        setData(data);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
       }
+    }
 
-    if (inventoryOpen === 1) getData();
+    if (inventoryOpen === 1 && userId) getData();
   }, [inventoryOpen]);
 
   return (
@@ -111,17 +150,37 @@ export default function Inventory({ className }: InventoryProps) {
     >
       <img className="rounded-t" src="images/inventory_bg.png" alt="" />
       <div className="flex cursor-pointer items-center gap-1 font-Impact">
-        <div onClick={() => handleClick(2)} className="mt-5 w-full text-center bg-clip-text text-transparent bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]">
-          <p className={`bg-clip-text ${inventoryOpen !== 3 ? "bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]" : "bg-white"}`}>Coins Earned</p>
-          <hr className={`border-0 my-2.5 h-[2px] ${inventoryOpen !== 3 ? "bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]" : "bg-white"}`}/>
+        <div
+          onClick={() => handleClick(2)}
+          className="mt-5 w-full text-center bg-clip-text text-transparent bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]"
+        >
+          <p
+            className={`bg-clip-text ${inventoryOpen !== 3 ? "bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]" : "bg-white"}`}
+          >
+            Coins Earned
+          </p>
+          <hr
+            className={`border-0 my-2.5 h-[2px] ${inventoryOpen !== 3 ? "bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]" : "bg-white"}`}
+          />
         </div>
-        <div onClick={() => { handleClick(3); }} className="mt-5 w-full text-center bg-clip-text text-transparent bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]">
-            <p className={`bg-clip-text ${inventoryOpen === 3 ? "bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]" : "bg-white"}`}>Coins Spent</p>
-          <hr className={`border-0 my-2.5 h-[2px] ${inventoryOpen === 3 ? "bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]" : "bg-white"}`}/>
+        <div
+          onClick={() => {
+            handleClick(3);
+          }}
+          className="mt-5 w-full text-center bg-clip-text text-transparent bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]"
+        >
+          <p
+            className={`bg-clip-text ${inventoryOpen === 3 ? "bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]" : "bg-white"}`}
+          >
+            Coins Spent
+          </p>
+          <hr
+            className={`border-0 my-2.5 h-[2px] ${inventoryOpen === 3 ? "bg-gradient-to-r from-[#9B6CFF] to-[#DBBBFF]" : "bg-white"}`}
+          />
         </div>
       </div>
       <EarntSection data={data?.coinsEarned} inventoryOpen={inventoryOpen} />
-      <SpentSection data={data?.coinsSpend} inventoryOpen={inventoryOpen}/>
+      <SpentSection data={data?.coinsSpend} inventoryOpen={inventoryOpen} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import LevelCard from "./ChallengeLeft/LevelCard";
 import { useFilterContext } from "../../Contexts/FilterContext";
+import { overwolfHttpRequest } from "utils/overwolfHttpRequest";
 
 export default function Col2() {
 const [challenges, setChallenges] = useState()
@@ -10,25 +11,22 @@ console.log(challenges);
 
 
 useEffect(() => {
-  const fetchData = async (gameId:string) => {
+  const fetchData = async (gameId: string) => {
     try {
-  
-      const gameData = await fetch(
-        `http://localhost:3000/challenges/ongoing-challenges/${gameId}`
+      const jsonData = await overwolfHttpRequest(
+        `http://localhost:3000/challenges/ongoing-challenges/${gameId}`,
+        "GET"
       );
   
-      if (!gameData.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const jsonData = await gameData.json();
       setChallenges(jsonData);
   
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
+  
   fetchData(gameId);
+  
 }, [gameId]);
 
   return (
