@@ -20,7 +20,7 @@ const gameIdMap: {
 };
 
 export const gameDataUpdaters = async (
-  userId: string,
+  userId: number,
   gameId: number,
   gameData: any
 ) => {
@@ -30,9 +30,9 @@ export const gameDataUpdaters = async (
   );
   try {
     const response = await overwolfHttpRequest(
-      `http://localhost:3000/challenges/valorant/progress/${userId}`,
+      `http://localhost:3000/challenges/update-completed-challanges`,
       "POST",
-      { ...gameData }
+      { gameData: { ...gameData }, userId: userId, gameId: gameId }
     );
 
     console.log(

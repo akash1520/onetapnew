@@ -110,7 +110,8 @@ export default function Leaderboard({ className }: { className: string }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        dispatch(fetchLeaderboardData(gameId));
+        // dispatch(fetchLeaderboardData(gameId));
+        console.log(gameId);
         try {
           const jsonData = await overwolfHttpRequest(
             `http://localhost:3000/leaderboard/game-specific/${gameId}`,
@@ -124,14 +125,11 @@ export default function Leaderboard({ className }: { className: string }) {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        setTimeout(() => {
-          fetchData();
-        }, 5000);
       }
     };
 
     fetchData();
-  }, [gameId, dispatch]);
+  }, [gameId]);
 
   return (
     <>

@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setUserId,
-  // setUserId
+  setAuth,
   setUserInfo,
 } from "screens/background/stores/background";
 import { LbBox } from "../Leaderboard/LeaderboardBanner";
@@ -15,85 +15,136 @@ import { overwolfHttpRequest } from "utils/overwolfHttpRequest";
 
 export default function UserProfile({ className }: { className: string }) {
   const [displayPage, setDisplayPage] = useState(false);
-  return (
-    <div className={`${className} mt-10 grid grid-cols-3`}>
-      <div className="col-span-2 -mt-10">
-        <div className="flex gap-3">
-          <div
-            onClick={() => setDisplayPage(!displayPage)}
-            className={`text-2xl p-2 px-6 rounded bg-[#302F2F] flex gap-2 border-[1px] items-center justify-between ${displayPage ? "text-white" : "border-[#BE9FFF] text-[#BE9FFF]"} cursor-pointer font-Impact`}
-          >
-            <img
-              className="mb-1"
-              src={`${displayPage ? "/icons/star_white.svg" : "/icons/star.svg"}`}
-              alt="star"
-            />
-            <p>My Ranking</p>
-          </div>
-          <div
-            onClick={() => setDisplayPage(!displayPage)}
-            className={`text-2xl p-2 px-6 rounded bg-[#302F2F] flex gap-2 border-[1px] ${!displayPage ? "text-white" : "border-[#BE9FFF] text-[#BE9FFF]"} cursor-pointer font-Impact`}
-          >
-            <img
-              src={`${displayPage ? "/icons/user_onetap.svg" : "/icons/user.svg"}`}
-              alt="star"
-            />
-            <p>My Profile</p>
-          </div>
-        </div>
-        {!displayPage ? <MyRanking /> : <MyProfile />}
-      </div>
-      <Filter
-        className={`${!displayPage ? "col-start-3" : "col-start-3 hidden"}`}
-      >
-        <GameCard id={"1"} img_src="pubg" className="w-36" />
-        <GameCard id={"2"} img_src="dota2" className="w-36" />
-        <GameCard id={"3"} img_src="apex_legends" className="w-36" />
-        <GameCard id={"4"} img_src="cod_warzone" className="w-36" />
-        <GameCard id={"5"} img_src="cs_go" className="w-36" />
-        <GameCard id={"6"} img_src="fortnite" className="w-36" />
-        <GameCard id={"7"} img_src="hearthstone" className="w-36" />
-      </Filter>
-    </div>
-  );
-}
-
-function MyRanking() {
-  const { userId, userInfo } = useSelector((state: any) => state.background);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch<any>();
+  const { userId, userInfo } = useSelector((state: any) => state.background);
 
   useEffect(() => {
-    async function fetchUserId() {
+    async function fetchAndSetUserInfo() {
+      setIsLoading(true);
       try {
         const { data, error } = await supabase.auth.getUser();
-        console.log("data from my ranking page", data);
-        if (error) {
-          throw new Error(error.message);
-        }
+        if (error) throw error;
         if (data.user) {
-          dispatch(setUserId(data.user.id));
-          return data.user.id;
-        } else {
-          return null;
-        }
-      } catch (error) {
-        console.error("Failed to fetch user ID:", error);
-      }
-    }
+          const fetchedAuthId = data.user.id;
+          console.log("Fetched AuthId:", fetchedAuthId);
 
-    async function fetchAndSetUserInfo() {
-      try {
-        const userIdFromFetch = await fetchUserId();
-        console.log("user id from fetch", userIdFromFetch);
-        console.log("fetched user id", userId);
-        
+          await dispatch(setAuth(fetchedAuthId));
+
+          const userExists = await checkUserExists(fetchedAuthId);
+          if (!userExists) {
+            const newUserId = await fetchUserIdFromDb(fetchedAuthId);
+            console.log("New User Created:", newUserId);
+          } else {
+            console.log("Existing User:", userExists);
+            await dispatch(setUserInfo(userExists));
+            await dispatch(setUserId(userExists.id));
+          }
+        }
       } catch (error) {
         console.error("Error fetching or setting user info:", error);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     fetchAndSetUserInfo();
-  }, [userId]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log("UserProfile - AuthId:", userInfo.Auth);
+    console.log("UserProfile - UserId:", userId);
+    console.log("UserProfile - UserInfo:", userInfo);
+  }, [userInfo.Auth, userId, userInfo]);
+
+  async function checkUserExists(authId: string) {
+    try {
+      const response = await overwolfHttpRequest(
+        `http://localhost:3000/user/basic-info/${authId}`,
+        "GET"
+      );
+      return response;
+    } catch (error) {
+      console.error("Failed to check if user exists:", error);
+      return null;
+    }
+  }
+
+  async function fetchUserIdFromDb(authId: string) {
+    try {
+      const response = await overwolfHttpRequest(
+        `http://localhost:3000/user/profile-data/${authId}`,
+        "POST",
+        {
+          data: {
+            Auth: authId,
+            userName: `user ${authId}`,
+          },
+        }
+      );
+      if (response) {
+        await dispatch(setUserId(response.id));
+        return response.id;
+      }
+    } catch (error) {
+      console.error("Failed to fetch user ID:", error);
+    }
+  }
+  return (
+    <div className={`${className} mt-10 grid grid-cols-3`}>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          <div className="col-span-2 -mt-10">
+            <div className="flex gap-3">
+              <div
+                onClick={() => setDisplayPage(!displayPage)}
+                className={`text-2xl p-2 px-6 rounded bg-[#302F2F] flex gap-2 border-[1px] items-center justify-between ${displayPage ? "text-white" : "border-[#BE9FFF] text-[#BE9FFF]"} cursor-pointer font-Impact`}
+              >
+                <img
+                  className="mb-1"
+                  src={`${displayPage ? "/icons/star_white.svg" : "/icons/star.svg"}`}
+                  alt="star"
+                />
+                <p>My Ranking</p>
+              </div>
+              <div
+                onClick={() => setDisplayPage(!displayPage)}
+                className={`text-2xl p-2 px-6 rounded bg-[#302F2F] flex gap-2 border-[1px] ${!displayPage ? "text-white" : "border-[#BE9FFF] text-[#BE9FFF]"} cursor-pointer font-Impact`}
+              >
+                <img
+                  src={`${displayPage ? "/icons/user_onetap.svg" : "/icons/user.svg"}`}
+                  alt="star"
+                />
+                <p>My Profile</p>
+              </div>
+            </div>
+            {!displayPage ? (
+              <MyRanking authId={userInfo.Auth} />
+            ) : (
+              <MyProfile authId={userInfo.Auth} />
+            )}
+          </div>
+          <Filter
+            className={`${!displayPage ? "col-start-3" : "col-start-3 hidden"}`}
+          >
+            <GameCard id={"1"} img_src="pubg" className="w-36" />
+            <GameCard id={"2"} img_src="dota2" className="w-36" />
+            <GameCard id={"3"} img_src="apex_legends" className="w-36" />
+            <GameCard id={"4"} img_src="cod_warzone" className="w-36" />
+            <GameCard id={"5"} img_src="cs_go" className="w-36" />
+            <GameCard id={"6"} img_src="fortnite" className="w-36" />
+            <GameCard id={"7"} img_src="hearthstone" className="w-36" />
+          </Filter>
+        </>
+      )}
+    </div>
+  );
+}
+
+export const MyRanking = ({ authId }: { authId: string }) => {
+  const { userInfo } = useSelector((state: any) => state.background);
 
   return (
     <div className="flex flex-col items-start p-20">
@@ -112,10 +163,9 @@ function MyRanking() {
       </div>
     </div>
   );
-}
+};
 
-function MyProfile() {
-  const dispatch = useDispatch<any>();
+export const MyProfile = ({ authId }: { authId: string }) => {
   const { userInfo, userId } = useSelector((state: any) => state.background);
 
   console.log(userInfo);
@@ -126,15 +176,17 @@ function MyProfile() {
     profileName: string;
   }) => {
     try {
-      console.log("called update user profile", values);
+      console.log("called update user profile", values, authId);
       const response = await overwolfHttpRequest(
-        `http://localhost:3000/user/profile-data/${userId}`,
+        `http://localhost:3000/user/profile-data/${authId}`,
         "POST",
         { data: values }
       );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}, ${response}`);
+      if (response.statusCode !== 200) {
+        throw new Error(
+          `HTTP error! status: ${response.statusCode}, ${response}`
+        );
       }
 
       const result = response.json();
@@ -169,31 +221,32 @@ function MyProfile() {
     formik.submitForm();
   };
 
-  useEffect(() => {
-    async function fetchUserIdAndInfo() {
-      try {
-        const { data, error } = await supabase.auth.getUser();
-        if (error) throw error;
-        if (data.user) {
-          const fetchedUserId = data.user.id;
-          dispatch(setUserId(fetchedUserId));
+  // useEffect(() => {
+  //   async function fetchUserIdAndInfo() {
+  //     try {
+  //       const { data, error } = await supabase.auth.getUser();
+  //       if (error) throw error;
+  //       if (data.user) {
+  //         const fetchedAuthId = data.user.id;
+  //         dispatch(setAuth(fetchedAuthId));
 
-          const userInfoResponse = await overwolfHttpRequest(
-            `http://localhost:3000/user/basic-info/${fetchedUserId}`,
-            "GET"
-          );
+  //         const userInfoResponse = await overwolfHttpRequest(
+  //           `http://localhost:3000/user/basic-info/${fetchedAuthId}`,
+  //           "GET"
+  //         );
 
-          console.log("User info response:", userInfoResponse);
-          dispatch(setUserInfo(userInfoResponse));
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      } finally {
-      }
-    }
+  //         console.log("User info response:", userInfoResponse);
+  //         dispatch(setUserInfo(userInfoResponse));
+  //         dispatch(setUserId(userInfoResponse.id))
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     } finally {
+  //     }
+  //   }
 
-    fetchUserIdAndInfo();
-  }, [dispatch]);
+  //   fetchUserIdAndInfo();
+  // }, [dispatch]);
 
   useEffect(() => {
     if (userInfo) {
@@ -286,7 +339,7 @@ function MyProfile() {
       </form>
     </div>
   );
-}
+};
 
 function Avatar() {
   return (

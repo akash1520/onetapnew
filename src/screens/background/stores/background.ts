@@ -32,7 +32,7 @@ const initialState: BackgroundState = {
     7314: {},
   },
   player_name: "",
-  userId: "1",
+  userId: 1,
   recentlyCompletedChallenges: [],
   userInfo: {
     id: 0,
@@ -99,7 +99,12 @@ const backgroundSlice = createSlice({
           case "match_end":
             state.gameData[state.gameId].match_end = new Date().toISOString();
             state.gameData[state.gameId].match_status = "false";
-            gameDataUpdaters(state.userId, state.gameId, state.gameData[state.gameId]);
+            console.log("match has ended");
+            gameDataUpdaters(
+              state.userId,
+              state.gameId,
+              state.gameData[state.gameId]
+            );
             break;
           // Add more cases for other event types
         }
@@ -162,11 +167,14 @@ const backgroundSlice = createSlice({
       console.log("setGameId:", action.payload);
       state.gameId = action.payload;
     },
-    setUserId(state, action: PayloadAction<string>) {
+    setUserId(state, action: PayloadAction<number>) {
       state.userId = action.payload;
     },
     setUserInfo(state, action: PayloadAction<any>) {
       state.userInfo = action.payload;
+    },
+    setAuth(state, action: PayloadAction<string>) {
+      state.userInfo.Auth = action.payload;
     },
   },
   // extraReducers: (builder) => {
@@ -187,6 +195,7 @@ export const {
   setGameId,
   setUserId,
   setUserInfo,
+  setAuth,
 } = backgroundSlice.actions;
 
 export default backgroundSlice.reducer;

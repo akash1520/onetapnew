@@ -8,7 +8,10 @@ interface FilterContextValue {
   }
   
   // Create the typed context with the defined interface
-  export const FilterContext = createContext<FilterContextValue>(undefined as unknown as FilterContextValue);
+  export const FilterContext = createContext<FilterContextValue>({
+    gameId: "",
+    handleFilterChange: () => {}
+  });
   
   
   export const FilterProvider = ({children}:{children:ReactNode})=>{

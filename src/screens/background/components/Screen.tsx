@@ -13,6 +13,7 @@ import { log } from "lib/log";
 import { checkSession, parseToken } from "lib/auth.utils";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { useFilterContext } from "screens/desktop/components/Contexts/FilterContext";
 
 const { DESKTOP, INGAME, LOGIN } = WINDOW_NAMES;
 
@@ -21,6 +22,7 @@ const BackgroundWindow = () => {
   const [ingame] = useWindow(INGAME, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const [login] = useWindow(LOGIN, DISPLAY_OVERWOLF_HOOKS_LOGS);
   const { gameId } = useSelector((state: any) => state.background);
+  const filterContext = useFilterContext();
   const dispatch = useDispatch();
   const required_features = REQUIRED_FEATURES[gameId];
   // log(
@@ -88,6 +90,7 @@ const BackgroundWindow = () => {
   useEffect(() => {
     // log(`Current game ID: ${gameId}`);
     // log(`Required features: ${JSON.stringify(REQUIRED_FEATURES[gameId])}`);
+    filterContext.handleFilterChange(gameId);
   }, [gameId]);
 
   useEffect(() => {
