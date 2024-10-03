@@ -30,7 +30,7 @@ export const gameDataUpdaters = async (
   );
   try {
     const response = await overwolfHttpRequest(
-      `http://localhost:3000/challenges/update-completed-challanges`,
+      `http://localhost:3000/challenges/update-completed-challenges`,
       "POST",
       { gameData: { ...gameData }, userId: userId, gameId: gameId }
     );

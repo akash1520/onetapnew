@@ -14,7 +14,7 @@ const initialState: BackgroundState = {
     21640: {
       match_start: "2024-03-31T19:08:38.679Z",
       match_end: "2024-04-8T18:30:00.000Z",
-      kills: 0,
+      total_kills: 0,
       deaths: 0,
       assists: 0,
       headshot: 0,
@@ -126,6 +126,10 @@ const backgroundSlice = createSlice({
                     state.player_name = scorecard.name;
                     Object.entries(scorecard).forEach(
                       ([scorecardKey, scorecardValue]) => {
+                        if (scorecardKey === "kills") {
+                          (state.gameData[state.gameId] as any)["total_kills"] =
+                            scorecardValue;
+                        }
                         if (scorecardKey in state.gameData[state.gameId]) {
                           (state.gameData[state.gameId] as any)[scorecardKey] =
                             scorecardValue;

@@ -80,7 +80,7 @@
         "in_game_only": true,
         "focus_game_takeover": "ReleaseOnHidden",
         "block_top_window_navigation": true,
-        "transparent": false,
+        "transparent": true,
         "resizable": true,
         "size": {
           "width": 350,
