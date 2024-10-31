@@ -1,5 +1,4 @@
-import { supabase } from "app";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setUserId,
@@ -13,137 +12,60 @@ import { useFormik } from "formik";
 import Button from "components/Button/Button";
 import { overwolfHttpRequest } from "utils/overwolfHttpRequest";
 
-export default function UserProfile({ className }: { className: string }) {
+const UserProfile = ({ className }: { className: string }) => {
   const [displayPage, setDisplayPage] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useDispatch<any>();
-  const { userId, userInfo } = useSelector((state: any) => state.background);
+  const { userInfo } = useSelector((state: any) => state.background);
 
-  useEffect(() => {
-    async function fetchAndSetUserInfo() {
-      setIsLoading(true);
-      try {
-        const { data, error } = await supabase.auth.getUser();
-        if (error) throw error;
-        if (data.user) {
-          const fetchedAuthId = data.user.id;
-          console.log("Fetched AuthId:", fetchedAuthId);
-
-          await dispatch(setAuth(fetchedAuthId));
-
-          const userExists = await checkUserExists(fetchedAuthId);
-          if (!userExists) {
-            const newUserId = await fetchUserIdFromDb(fetchedAuthId);
-            console.log("New User Created:", newUserId);
-          } else {
-            console.log("Existing User:", userExists);
-            await dispatch(setUserInfo(userExists));
-            await dispatch(setUserId(userExists.id));
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching or setting user info:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchAndSetUserInfo();
-  }, [dispatch]);
-
-  useEffect(() => {
-    console.log("UserProfile - AuthId:", userInfo.Auth);
-    console.log("UserProfile - UserId:", userId);
-    console.log("UserProfile - UserInfo:", userInfo);
-  }, [userInfo.Auth, userId, userInfo]);
-
-  async function checkUserExists(authId: string) {
-    try {
-      const response = await overwolfHttpRequest(
-        `http://localhost:3000/user/basic-info/${authId}`,
-        "GET"
-      );
-      return response;
-    } catch (error) {
-      console.error("Failed to check if user exists:", error);
-      return null;
-    }
-  }
-
-  async function fetchUserIdFromDb(authId: string) {
-    try {
-      const response = await overwolfHttpRequest(
-        `http://localhost:3000/user/profile-data/${authId}`,
-        "POST",
-        {
-          data: {
-            Auth: authId,
-            userName: `user ${authId}`,
-          },
-        }
-      );
-      if (response) {
-        await dispatch(setUserId(response.id));
-        return response.id;
-      }
-    } catch (error) {
-      console.error("Failed to fetch user ID:", error);
-    }
-  }
   return (
     <div className={`${className} mt-10 grid grid-cols-3`}>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <>
-          <div className="col-span-2 -mt-10">
-            <div className="flex gap-3">
-              <div
-                onClick={() => setDisplayPage(!displayPage)}
-                className={`text-2xl p-2 px-6 rounded bg-[#302F2F] flex gap-2 border-[1px] items-center justify-between ${displayPage ? "text-white" : "border-[#BE9FFF] text-[#BE9FFF]"} cursor-pointer font-Impact`}
-              >
-                <img
-                  className="mb-1"
-                  src={`${displayPage ? "/icons/star_white.svg" : "/icons/star.svg"}`}
-                  alt="star"
-                />
-                <p>My Ranking</p>
-              </div>
-              <div
-                onClick={() => setDisplayPage(!displayPage)}
-                className={`text-2xl p-2 px-6 rounded bg-[#302F2F] flex gap-2 border-[1px] ${!displayPage ? "text-white" : "border-[#BE9FFF] text-[#BE9FFF]"} cursor-pointer font-Impact`}
-              >
-                <img
-                  src={`${displayPage ? "/icons/user_onetap.svg" : "/icons/user.svg"}`}
-                  alt="star"
-                />
-                <p>My Profile</p>
-              </div>
+      <>
+        <div className="col-span-2 -mt-10">
+          <div className="flex gap-3">
+            <div
+              onClick={() => setDisplayPage(!displayPage)}
+              className={`text-2xl p-2 px-6 rounded bg-[#302F2F] flex gap-2 border-[1px] items-center justify-between ${displayPage ? "text-white" : "border-[#BE9FFF] text-[#BE9FFF]"} cursor-pointer font-Impact`}
+            >
+              <img
+                className="mb-1"
+                src={`${displayPage ? "/icons/star_white.svg" : "/icons/star.svg"}`}
+                alt="star"
+              />
+              <p>My Ranking</p>
             </div>
-            {!displayPage ? (
-              <MyRanking authId={userInfo.Auth} />
-            ) : (
-              <MyProfile authId={userInfo.Auth} />
-            )}
+            <div
+              onClick={() => setDisplayPage(!displayPage)}
+              className={`text-2xl p-2 px-6 rounded bg-[#302F2F] flex gap-2 border-[1px] ${!displayPage ? "text-white" : "border-[#BE9FFF] text-[#BE9FFF]"} cursor-pointer font-Impact`}
+            >
+              <img
+                src={`${displayPage ? "/icons/user_onetap.svg" : "/icons/user.svg"}`}
+                alt="star"
+              />
+              <p>My Profile</p>
+            </div>
           </div>
-          <Filter
-            className={`${!displayPage ? "col-start-3" : "col-start-3 hidden"}`}
-          >
-            <GameCard id={"1"} img_src="pubg" className="w-36" />
-            <GameCard id={"2"} img_src="dota2" className="w-36" />
-            <GameCard id={"3"} img_src="apex_legends" className="w-36" />
-            <GameCard id={"4"} img_src="cod_warzone" className="w-36" />
-            <GameCard id={"5"} img_src="cs_go" className="w-36" />
-            <GameCard id={"6"} img_src="fortnite" className="w-36" />
-            <GameCard id={"7"} img_src="hearthstone" className="w-36" />
-          </Filter>
-        </>
-      )}
+          {!displayPage ? (
+            <MyRanking authId={userInfo.Auth} />
+          ) : (
+            <MyProfile authId={userInfo.Auth} />
+          )}
+        </div>
+        <Filter
+          className={`${!displayPage ? "col-start-3" : "col-start-3 hidden"}`}
+        >
+          <GameCard id={"1"} img_src="pubg" className="w-36" />
+          <GameCard id={"2"} img_src="dota2" className="w-36" />
+          <GameCard id={"3"} img_src="apex_legends" className="w-36" />
+          <GameCard id={"4"} img_src="cod_warzone" className="w-36" />
+          <GameCard id={"5"} img_src="cs_go" className="w-36" />
+          <GameCard id={"6"} img_src="fortnite" className="w-36" />
+          <GameCard id={"7"} img_src="hearthstone" className="w-36" />
+        </Filter>
+      </>
     </div>
   );
-}
+};
 
-export const MyRanking = ({ authId }: { authId: string }) => {
+export const MyRanking = memo(({ authId }: { authId: string }) => {
   const { userInfo } = useSelector((state: any) => state.background);
 
   return (
@@ -163,9 +85,9 @@ export const MyRanking = ({ authId }: { authId: string }) => {
       </div>
     </div>
   );
-};
+});
 
-export const MyProfile = ({ authId }: { authId: string }) => {
+export const MyProfile = memo(({ authId }: { authId: string }) => {
   const { userInfo, userId } = useSelector((state: any) => state.background);
 
   console.log(userInfo);
@@ -339,7 +261,7 @@ export const MyProfile = ({ authId }: { authId: string }) => {
       </form>
     </div>
   );
-};
+});
 
 function Avatar() {
   return (
@@ -375,3 +297,5 @@ function Avatar() {
     </div>
   );
 }
+
+export default memo(UserProfile);

@@ -11,7 +11,7 @@ export const useLoginHooks = (LOGIN: string, DESKTOP: string) => {
     async function sessionCheck() {
       if (await checkSession()) {
         desktop.restore();
-        login.minimize()();
+        login.minimize();
       }
     }
     sessionCheck();
